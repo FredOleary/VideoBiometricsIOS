@@ -13,6 +13,12 @@
 		53691D3B23C543260015B86C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53691D3A23C543260015B86C /* Assets.xcassets */; };
 		53691D3E23C543260015B86C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53691D3D23C543260015B86C /* Preview Assets.xcassets */; };
 		53691D4123C543260015B86C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 53691D3F23C543260015B86C /* LaunchScreen.storyboard */; };
+		53691D4923C56FD50015B86C /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53691D4823C56FD50015B86C /* opencv2.framework */; };
+		53691D4D23C570630015B86C /* OpenCVWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 53691D4B23C570620015B86C /* OpenCVWrapper.mm */; };
+		53691D5123C570760015B86C /* haarcascade_frontalface_default.xml in Resources */ = {isa = PBXBuildFile; fileRef = 53691D4E23C570760015B86C /* haarcascade_frontalface_default.xml */; };
+		53691D5223C570760015B86C /* OpenCVImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 53691D5023C570760015B86C /* OpenCVImageProcessor.mm */; };
+		53691D5623C5710C0015B86C /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53691D5423C5710C0015B86C /* CoreMedia.framework */; };
+		53691D5723C5710C0015B86C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53691D5523C5710C0015B86C /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +30,15 @@
 		53691D3D23C543260015B86C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		53691D4023C543260015B86C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		53691D4223C543260015B86C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		53691D4823C56FD50015B86C /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
+		53691D4A23C570620015B86C /* VidoeBiometricsIOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VidoeBiometricsIOS-Bridging-Header.h"; sourceTree = "<group>"; };
+		53691D4B23C570620015B86C /* OpenCVWrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenCVWrapper.mm; sourceTree = "<group>"; };
+		53691D4C23C570630015B86C /* OpenCVWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenCVWrapper.h; sourceTree = "<group>"; };
+		53691D4E23C570760015B86C /* haarcascade_frontalface_default.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_frontalface_default.xml; sourceTree = "<group>"; };
+		53691D4F23C570760015B86C /* OpenCVImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenCVImageProcessor.h; sourceTree = "<group>"; };
+		53691D5023C570760015B86C /* OpenCVImageProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenCVImageProcessor.mm; sourceTree = "<group>"; };
+		53691D5423C5710C0015B86C /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		53691D5523C5710C0015B86C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +46,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				53691D5623C5710C0015B86C /* CoreMedia.framework in Frameworks */,
+				53691D4923C56FD50015B86C /* opencv2.framework in Frameworks */,
+				53691D5723C5710C0015B86C /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,8 +58,10 @@
 		53691D2823C5431F0015B86C = {
 			isa = PBXGroup;
 			children = (
+				53691D4823C56FD50015B86C /* opencv2.framework */,
 				53691D3323C5431F0015B86C /* VidoeBiometricsIOS */,
 				53691D3223C5431F0015B86C /* Products */,
+				53691D5323C5710C0015B86C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,12 +77,18 @@
 			isa = PBXGroup;
 			children = (
 				53691D3423C5431F0015B86C /* AppDelegate.swift */,
+				53691D4E23C570760015B86C /* haarcascade_frontalface_default.xml */,
+				53691D4F23C570760015B86C /* OpenCVImageProcessor.h */,
+				53691D5023C570760015B86C /* OpenCVImageProcessor.mm */,
+				53691D4C23C570630015B86C /* OpenCVWrapper.h */,
+				53691D4B23C570620015B86C /* OpenCVWrapper.mm */,
 				53691D3623C5431F0015B86C /* SceneDelegate.swift */,
 				53691D3823C5431F0015B86C /* ContentView.swift */,
 				53691D3A23C543260015B86C /* Assets.xcassets */,
 				53691D3F23C543260015B86C /* LaunchScreen.storyboard */,
 				53691D4223C543260015B86C /* Info.plist */,
 				53691D3C23C543260015B86C /* Preview Content */,
+				53691D4A23C570620015B86C /* VidoeBiometricsIOS-Bridging-Header.h */,
 			);
 			path = VidoeBiometricsIOS;
 			sourceTree = "<group>";
@@ -73,6 +99,15 @@
 				53691D3D23C543260015B86C /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		53691D5323C5710C0015B86C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				53691D5523C5710C0015B86C /* AVFoundation.framework */,
+				53691D5423C5710C0015B86C /* CoreMedia.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -107,6 +142,7 @@
 				TargetAttributes = {
 					53691D3023C5431F0015B86C = {
 						CreatedOnToolsVersion = 11.3;
+						LastSwiftMigration = 1130;
 					};
 				};
 			};
@@ -135,6 +171,7 @@
 			files = (
 				53691D4123C543260015B86C /* LaunchScreen.storyboard in Resources */,
 				53691D3E23C543260015B86C /* Preview Assets.xcassets in Resources */,
+				53691D5123C570760015B86C /* haarcascade_frontalface_default.xml in Resources */,
 				53691D3B23C543260015B86C /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -146,6 +183,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				53691D5223C570760015B86C /* OpenCVImageProcessor.mm in Sources */,
+				53691D4D23C570630015B86C /* OpenCVWrapper.mm in Sources */,
 				53691D3523C5431F0015B86C /* AppDelegate.swift in Sources */,
 				53691D3723C5431F0015B86C /* SceneDelegate.swift in Sources */,
 				53691D3923C5431F0015B86C /* ContentView.swift in Sources */,
@@ -284,10 +323,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"VidoeBiometricsIOS/Preview Content\"";
 				DEVELOPMENT_TEAM = Y69W3H82PD;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = VidoeBiometricsIOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -295,6 +339,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = fred.VidoeBiometricsIOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "VidoeBiometricsIOS/VidoeBiometricsIOS-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -304,10 +350,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"VidoeBiometricsIOS/Preview Content\"";
 				DEVELOPMENT_TEAM = Y69W3H82PD;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = VidoeBiometricsIOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -315,6 +366,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = fred.VidoeBiometricsIOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "VidoeBiometricsIOS/VidoeBiometricsIOS-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

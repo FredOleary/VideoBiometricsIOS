@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol OpenCVWrapperDelegate <NSObject>
 - (void)framesReady:(bool)videoProcessingPaused;
-- (void)frameReady:(UIImage*) frame;
+- (void)frameAvailable:(UIImage*) frame;
 @end
 
 @protocol OpenCVImageProcessorDelegate <NSObject>

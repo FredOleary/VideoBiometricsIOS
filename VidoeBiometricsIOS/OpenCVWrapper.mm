@@ -117,7 +117,7 @@
     
 - (void)frameReady: (UIImage*) frame
 {
-    NSLog(@"OpenCVWrapper:frameReady");
-    [self.delegate frameReady:frame ];
+//    NSLog(@"OpenCVWrapper:frameReady");
+    [self.delegate frameAvailable:frame ];
 }
 @end

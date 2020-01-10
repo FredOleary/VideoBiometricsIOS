@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -19,6 +19,10 @@
 		53691D5223C570760015B86C /* OpenCVImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 53691D5023C570760015B86C /* OpenCVImageProcessor.mm */; };
 		53691D5623C5710C0015B86C /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53691D5423C5710C0015B86C /* CoreMedia.framework */; };
 		53691D5723C5710C0015B86C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53691D5523C5710C0015B86C /* AVFoundation.framework */; };
+		53D6EB1023C8DC1D00679BCC /* LineCharts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6EB0F23C8DC1D00679BCC /* LineCharts.swift */; };
+		53D6EB1223C8DD1B00679BCC /* RawDataChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6EB1123C8DD1B00679BCC /* RawDataChartView.swift */; };
+		53D6EB1523C8E0C800679BCC /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6EB1423C8E0C800679BCC /* VideoView.swift */; };
+		59BB64B943AC29BF24B34114 /* Pods_VidoeBiometricsIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9B31DEEC719EEC0E91B0908 /* Pods_VidoeBiometricsIOS.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +43,12 @@
 		53691D5023C570760015B86C /* OpenCVImageProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenCVImageProcessor.mm; sourceTree = "<group>"; };
 		53691D5423C5710C0015B86C /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		53691D5523C5710C0015B86C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		53D6EB0F23C8DC1D00679BCC /* LineCharts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LineCharts.swift; path = /Users/fredoleary/xcodeprojects/VidoeBiometricsIOS/VidoeBiometricsIOS/LineCharts.swift; sourceTree = "<absolute>"; };
+		53D6EB1123C8DD1B00679BCC /* RawDataChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawDataChartView.swift; sourceTree = "<group>"; };
+		53D6EB1423C8E0C800679BCC /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
+		D9B31DEEC719EEC0E91B0908 /* Pods_VidoeBiometricsIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VidoeBiometricsIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA83E61BA0C74F54FDB92174 /* Pods-VidoeBiometricsIOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VidoeBiometricsIOS.release.xcconfig"; path = "Target Support Files/Pods-VidoeBiometricsIOS/Pods-VidoeBiometricsIOS.release.xcconfig"; sourceTree = "<group>"; };
+		F0A6F3916DC8557C9702DB0B /* Pods-VidoeBiometricsIOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VidoeBiometricsIOS.debug.xcconfig"; path = "Target Support Files/Pods-VidoeBiometricsIOS/Pods-VidoeBiometricsIOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +59,7 @@
 				53691D5623C5710C0015B86C /* CoreMedia.framework in Frameworks */,
 				53691D4923C56FD50015B86C /* opencv2.framework in Frameworks */,
 				53691D5723C5710C0015B86C /* AVFoundation.framework in Frameworks */,
+				59BB64B943AC29BF24B34114 /* Pods_VidoeBiometricsIOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,6 +73,7 @@
 				53691D3323C5431F0015B86C /* VidoeBiometricsIOS */,
 				53691D3223C5431F0015B86C /* Products */,
 				53691D5323C5710C0015B86C /* Frameworks */,
+				60E9EBEE06F5EBE0577EDD6C /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -76,6 +88,7 @@
 		53691D3323C5431F0015B86C /* VidoeBiometricsIOS */ = {
 			isa = PBXGroup;
 			children = (
+				53D6EB1323C8E07E00679BCC /* Views */,
 				53691D3423C5431F0015B86C /* AppDelegate.swift */,
 				53691D4E23C570760015B86C /* haarcascade_frontalface_default.xml */,
 				53691D4F23C570760015B86C /* OpenCVImageProcessor.h */,
@@ -84,6 +97,7 @@
 				53691D4B23C570620015B86C /* OpenCVWrapper.mm */,
 				53691D3623C5431F0015B86C /* SceneDelegate.swift */,
 				53691D3823C5431F0015B86C /* ContentView.swift */,
+				53D6EB0F23C8DC1D00679BCC /* LineCharts.swift */,
 				53691D3A23C543260015B86C /* Assets.xcassets */,
 				53691D3F23C543260015B86C /* LaunchScreen.storyboard */,
 				53691D4223C543260015B86C /* Info.plist */,
@@ -106,8 +120,27 @@
 			children = (
 				53691D5523C5710C0015B86C /* AVFoundation.framework */,
 				53691D5423C5710C0015B86C /* CoreMedia.framework */,
+				D9B31DEEC719EEC0E91B0908 /* Pods_VidoeBiometricsIOS.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		53D6EB1323C8E07E00679BCC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				53D6EB1123C8DD1B00679BCC /* RawDataChartView.swift */,
+				53D6EB1423C8E0C800679BCC /* VideoView.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		60E9EBEE06F5EBE0577EDD6C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F0A6F3916DC8557C9702DB0B /* Pods-VidoeBiometricsIOS.debug.xcconfig */,
+				EA83E61BA0C74F54FDB92174 /* Pods-VidoeBiometricsIOS.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -117,9 +150,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 53691D4523C543260015B86C /* Build configuration list for PBXNativeTarget "VidoeBiometricsIOS" */;
 			buildPhases = (
+				F645F66B1C517B813BF88EEC /* [CP] Check Pods Manifest.lock */,
 				53691D2D23C5431F0015B86C /* Sources */,
 				53691D2E23C5431F0015B86C /* Frameworks */,
 				53691D2F23C5431F0015B86C /* Resources */,
+				DA76AB20C329623059E43811 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -178,6 +213,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		DA76AB20C329623059E43811 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VidoeBiometricsIOS/Pods-VidoeBiometricsIOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VidoeBiometricsIOS/Pods-VidoeBiometricsIOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VidoeBiometricsIOS/Pods-VidoeBiometricsIOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F645F66B1C517B813BF88EEC /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-VidoeBiometricsIOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		53691D2D23C5431F0015B86C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -185,8 +262,11 @@
 			files = (
 				53691D5223C570760015B86C /* OpenCVImageProcessor.mm in Sources */,
 				53691D4D23C570630015B86C /* OpenCVWrapper.mm in Sources */,
+				53D6EB1223C8DD1B00679BCC /* RawDataChartView.swift in Sources */,
 				53691D3523C5431F0015B86C /* AppDelegate.swift in Sources */,
+				53D6EB1523C8E0C800679BCC /* VideoView.swift in Sources */,
 				53691D3723C5431F0015B86C /* SceneDelegate.swift in Sources */,
+				53D6EB1023C8DC1D00679BCC /* LineCharts.swift in Sources */,
 				53691D3923C5431F0015B86C /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -321,6 +401,7 @@
 		};
 		53691D4623C543260015B86C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F0A6F3916DC8557C9702DB0B /* Pods-VidoeBiometricsIOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -348,6 +429,7 @@
 		};
 		53691D4723C543260015B86C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EA83E61BA0C74F54FDB92174 /* Pods-VidoeBiometricsIOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

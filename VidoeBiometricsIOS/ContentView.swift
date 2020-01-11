@@ -11,7 +11,8 @@ import SwiftUI
 class VideoDelegate: NSObject, OpenCVWrapperDelegate{
     var videoView:VideoView? = nil
     var parent:ContentView?
-    
+    var cameraRunning = CameraState.stopped;
+
     func frameAvailable(_ frame: UIImage) {
 //        print("VideoDelegate:frameAvailable")
         videoView?.videoFrame = frame
@@ -24,14 +25,14 @@ class VideoDelegate: NSObject, OpenCVWrapperDelegate{
             let pauseBetweenSamples = true
             if( pauseBetweenSamples ){
                 DispatchQueue.main.async {
+                        self.cameraRunning = CameraState.paused
                         self.parent?.buttonText = "Resume"
 //                    self.buttonVideo.setTitle("Resume Video", for: .normal)
-//                    self.cameraRunning = cameraState.paused
                 }
-//            }else{
-//                openCVWrapper.resumeCamera();
+            }else{
+                self.parent!.openCVWrapper.resumeCamera();
             }
-//            heartRateCalculation?.calculateHeartRate()
+            self.parent!.heartRateCalculation.calculateHeartRate()
 //            var heartRateStr:String = "Heart Rate: N/A"
 //            let hrFrequency = calculateHeartRate()
 //            if( hrFrequency > 0){
@@ -49,11 +50,33 @@ class VideoDelegate: NSObject, OpenCVWrapperDelegate{
 //            }
         }
     }
+    func initialize( parent:ContentView){
+        self.parent = parent
+        parent.openCVWrapper.initializeCamera(300)
+    }
+    func startStopCamera(){
+        if( cameraRunning == CameraState.stopped ){
+            cameraRunning = CameraState.running;
+            self.parent!.openCVWrapper.startCamera();
+            self.parent!.buttonText = "Stop"
+        }else if( cameraRunning == CameraState.running ){
+            cameraRunning = CameraState.stopped;
+            self.parent!.openCVWrapper.stopCamera();
+            self.parent!.buttonText = "Start"
+        }else if( cameraRunning == CameraState.paused ){
+            cameraRunning = CameraState.running;
+            self.parent!.openCVWrapper.resumeCamera();
+            self.parent!.buttonText = "Stop"
+        }
+
+    }
+
 }
 
 struct ContentView: View {
     let openCVWrapper:OpenCVWrapper = OpenCVWrapper()
     var heartRateCalculation:HeartRateCalculation
+    
     @State var showVideo = true
     @State var showRaw = false
     @State var buttonText = "Start"
@@ -72,7 +95,7 @@ struct ContentView: View {
                     self.showVideo = true
                     self.showRaw = false
                 }) {
-                    Text(buttonText)
+                    Text("Video")
                 
                 }
                 Spacer()
@@ -97,14 +120,20 @@ struct ContentView: View {
                 Spacer()
                 Text("Heart Rate")
             }
+            Button(action: {
+                self.videoDelegate.startStopCamera()
+            }) {
+                Text(buttonText)
+            }
+
             if showVideo {
-                VideoView(bgColor: .blue, cvWrapper: openCVWrapper, videoDelegate: videoDelegate)
+                VideoView(bgColor: .blue, videoDelegate: videoDelegate)
             }
             if showRaw {
                 RawDataChartView( parent:self )
             }
             Spacer()
-        }.onAppear(perform: {self.videoDelegate.parent = self})
+        }.onAppear(perform: {self.videoDelegate.initialize( parent:self )})
         
     }
 }
@@ -113,4 +142,10 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }
+}
+
+enum CameraState {
+    case stopped
+    case running
+    case paused
 }

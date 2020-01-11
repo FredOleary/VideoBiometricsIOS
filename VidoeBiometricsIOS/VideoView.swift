@@ -10,27 +10,28 @@ import SwiftUI
 
 struct VideoView: View {
     var bgColor: Color
-    var openCVWrapper:OpenCVWrapper
+//    var openCVWrapper:OpenCVWrapper
     var videoDelegate:VideoDelegate
     
     @State var videoFrame: UIImage = UIImage(imageLiteralResourceName: "Heart-icon")
     
-    init( bgColor:Color, cvWrapper:OpenCVWrapper, videoDelegate:VideoDelegate ){
+//    init( bgColor:Color, cvWrapper:OpenCVWrapper, videoDelegate:VideoDelegate ){
+    init( bgColor:Color, videoDelegate:VideoDelegate ){
         print("VideoView-init()")
         self.bgColor = bgColor
-        self.openCVWrapper = cvWrapper
+//        self.openCVWrapper = cvWrapper
         self.videoDelegate = videoDelegate
         
-        print("\(openCVWrapper.openCVVersionString())")
+//        print("\(openCVWrapper.openCVVersionString())")
     }
     var body: some View {
         VStack{
-            Button(action: {
-                self.openCVWrapper.initializeCamera( 300);
-                self.openCVWrapper.startCamera();
-            }) {
-                Text("Start Video")
-            }
+//            Button(action: {
+//                self.openCVWrapper.initializeCamera( 300);
+//                self.openCVWrapper.startCamera();
+//            }) {
+//                Text("Start Video")
+//            }
             Image(uiImage:videoFrame ).onAppear(perform: fixupVideoFrame)
         }
         

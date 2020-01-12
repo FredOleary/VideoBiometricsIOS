@@ -98,7 +98,7 @@ struct ContentView: View {
     @State var showRaw = false
     @State var startStopVideoButton = "Start"
     @State var heartRateLabel = "Heart Rate: N/A"
-    @State var progressBarValue:CGFloat = 0.3
+    @State var progressBarValue:CGFloat = 0
 
     var lineChartsRaw = LineCharts()
     let videoDelegate = VideoDelegate()
@@ -141,11 +141,21 @@ struct ContentView: View {
                 Text(heartRateLabel)
             }
             ProgressBar(value: $progressBarValue).frame(height:10)
+//            Button(action: {
+//                self.videoDelegate.startStopCamera()
+//            }) {
+//                Text(startStopVideoButton)
+//            }
             Button(action: {
                 self.videoDelegate.startStopCamera()
             }) {
                 Text(startStopVideoButton)
+                .frame(minWidth: 0, maxWidth: .infinity)
+                .padding(15)
+                .font(Font.system(size: 24))
             }
+            .background(Color.blue)
+            .foregroundColor(.white)
 
             if showVideo {
                 VideoView(bgColor: .blue, videoDelegate: videoDelegate)

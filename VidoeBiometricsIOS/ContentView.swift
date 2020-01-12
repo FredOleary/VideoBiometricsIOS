@@ -9,16 +9,19 @@
 import SwiftUI
 
 class VideoDelegate: NSObject, OpenCVWrapperDelegate{
+    
     var videoView:VideoView? = nil
     var parent:ContentView?
     var cameraRunning = CameraState.stopped;
     let openCVWrapper = OpenCVWrapper()
     var heartRateCalculation:HeartRateCalculation?
 
-    func frameAvailable(_ frame: UIImage, _ heartRateProgress: Float) {
+    func frameAvailable(_ frame: UIImage, _ heartRateProgress: Float, _ frameNumber: Int32) {
 //        print("VideoDelegate:frameAvailable")
         videoView?.videoFrame = frame
         parent!.progressBarValue = CGFloat(heartRateProgress)
+        self.parent!.frameNumberLabel = NSString(format: "Frame: %d", frameNumber) as String
+        
     }
     
     func framesReady(_ videoProcessingPaused: Bool) {
@@ -99,6 +102,7 @@ struct ContentView: View {
     @State var startStopVideoButton = "Start"
     @State var heartRateLabel = "Heart Rate: N/A"
     @State var progressBarValue:CGFloat = 0
+    @State var frameNumberLabel = "Frame: "
 
     var lineChartsRaw = LineCharts()
     let videoDelegate = VideoDelegate()
@@ -136,10 +140,11 @@ struct ContentView: View {
                 }
             }
             HStack{
-                Text("FrameX:")
+                Text(frameNumberLabel).padding(.leading)
                 Spacer()
-                Text(heartRateLabel)
+                Text(heartRateLabel).padding(.trailing)
             }
+            .padding(.top)
             ProgressBar(value: $progressBarValue).frame(height:10)
 //            Button(action: {
 //                self.videoDelegate.startStopCamera()
@@ -151,7 +156,7 @@ struct ContentView: View {
             }) {
                 Text(startStopVideoButton)
                 .frame(minWidth: 0, maxWidth: .infinity)
-                .padding(15)
+                .padding(10)
                 .font(Font.system(size: 24))
             }
             .background(Color.blue)

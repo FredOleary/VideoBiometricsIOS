@@ -36,7 +36,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol OpenCVWrapperDelegate <NSObject>
 - (void)framesReady:(bool)videoProcessingPaused;
-- (void)frameAvailable:(UIImage*) frame :(float)heartRateProgress;
+- (void)frameAvailable:(UIImage*) frame
+                      :(float) heartRateProgress
+                      :(int) frameNumber;
 @end
 
 @protocol OpenCVImageProcessorDelegate <NSObject>
@@ -47,7 +49,8 @@ NS_ASSUME_NONNULL_BEGIN
                        :(double)fps;
 
 - (void)frameReady: (UIImage*) frame
-                  : (float) heartRateProgress;
+                  : (float) heartRateProgress
+                  : (int) frameNumber;
                         
 @end
 

@@ -115,9 +115,9 @@
     [self.delegate framesReady:imageProcessor.videoProcessingPaused ];
 }
     
-- (void)frameReady: (UIImage*) frame
+- (void)frameReady: (UIImage*) frame :(float) heartRateProgress
 {
 //    NSLog(@"OpenCVWrapper:frameReady");
-    [self.delegate frameAvailable:frame ];
+    [self.delegate frameAvailable:frame :heartRateProgress];
 }
 @end

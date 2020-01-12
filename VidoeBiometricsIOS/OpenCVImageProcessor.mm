@@ -79,7 +79,7 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
 //            self->opencvView.image = outImage;
-            [self.delegate frameReady:outImage];
+            [self.delegate frameReady:outImage :(float)self->frameCount/(float)self->framesPerHrReading ];
 
 //            self->heartrateLabel.text = [NSString stringWithFormat:@"Frame: %d", ++self->totalFrameCount];
 //            [self->heartrateProgress setProgress:(float)self->frameCount/(float)self->framesPerHrReading];

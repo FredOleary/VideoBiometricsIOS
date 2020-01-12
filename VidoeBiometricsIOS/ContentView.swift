@@ -26,20 +26,23 @@ class VideoDelegate: NSObject, OpenCVWrapperDelegate{
             if( pauseBetweenSamples ){
                 DispatchQueue.main.async {
                         self.cameraRunning = CameraState.paused
-                        self.parent?.buttonText = "Resume"
-//                    self.buttonVideo.setTitle("Resume Video", for: .normal)
+                        self.parent?.startStopVideoButton = "Resume"
                 }
             }else{
                 self.parent!.openCVWrapper.resumeCamera();
             }
             self.parent!.heartRateCalculation.calculateHeartRate()
-//            var heartRateStr:String = "Heart Rate: N/A"
-//            let hrFrequency = calculateHeartRate()
-//            if( hrFrequency > 0){
-//                let hrFrequencyICA = calculateHeartRateFromICA()
-//                heartRateStr = NSString(format: "Heart Rate %.1f/%.1f", hrFrequency, hrFrequencyICA) as String
-//            }
-//
+            var heartRateStr:String = "Heart Rate: N/A"
+            let hrFrequency = calculateHeartRate()
+            if( hrFrequency > 0){
+                let hrFrequencyICA = calculateHeartRateFromICA()
+                heartRateStr = NSString(format: "Heart Rate %.1f/%.1f", hrFrequency, hrFrequencyICA) as String
+            }
+            DispatchQueue.main.async {
+                    self.parent?.heartRateLabel = heartRateStr
+            }
+
+
 //            DispatchQueue.main.async {
 //                self.heartRateLabel.text = heartRateStr
 //                self.rawDelegate?.dataReady()
@@ -58,17 +61,23 @@ class VideoDelegate: NSObject, OpenCVWrapperDelegate{
         if( cameraRunning == CameraState.stopped ){
             cameraRunning = CameraState.running;
             self.parent!.openCVWrapper.startCamera();
-            self.parent!.buttonText = "Stop"
+            self.parent!.startStopVideoButton = "Stop"
         }else if( cameraRunning == CameraState.running ){
             cameraRunning = CameraState.stopped;
             self.parent!.openCVWrapper.stopCamera();
-            self.parent!.buttonText = "Start"
+            self.parent!.startStopVideoButton = "Start"
         }else if( cameraRunning == CameraState.paused ){
             cameraRunning = CameraState.running;
             self.parent!.openCVWrapper.resumeCamera();
-            self.parent!.buttonText = "Stop"
+            self.parent!.startStopVideoButton = "Stop"
         }
 
+    }
+    func calculateHeartRate() -> Double{
+        return parent!.heartRateCalculation.heartRateFrequency! * 60.0
+    }
+    func calculateHeartRateFromICA() -> Double{
+        return parent!.heartRateCalculation.heartRateFrequencyICA! * 60.0
     }
 
 }
@@ -79,7 +88,8 @@ struct ContentView: View {
     
     @State var showVideo = true
     @State var showRaw = false
-    @State var buttonText = "Start"
+    @State var startStopVideoButton = "Start"
+    @State var heartRateLabel = "Heart Rate: N/A"
 
     var lineChartsRaw = LineCharts()
     let videoDelegate = VideoDelegate()
@@ -118,12 +128,12 @@ struct ContentView: View {
             HStack{
                 Text("FrameX:")
                 Spacer()
-                Text("Heart Rate")
+                Text(heartRateLabel)
             }
             Button(action: {
                 self.videoDelegate.startStopCamera()
             }) {
-                Text(buttonText)
+                Text(startStopVideoButton)
             }
 
             if showVideo {

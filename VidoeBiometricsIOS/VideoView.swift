@@ -32,7 +32,9 @@ struct VideoView: View {
 //            }) {
 //                Text("Start Video")
 //            }
-            Image(uiImage:videoFrame ).onAppear(perform: fixupVideoFrame)
+            Image(uiImage:videoFrame )
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+            .onAppear(perform: fixupVideoFrame)
         }
         
     }

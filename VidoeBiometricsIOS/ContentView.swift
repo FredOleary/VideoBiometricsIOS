@@ -30,10 +30,13 @@ class VideoDelegate: NSObject, OpenCVWrapperDelegate{
 //            let pauseBetweenSamples = Settings.getPauseBetweenSamples()
             let pauseBetweenSamples = true
             if( pauseBetweenSamples ){
-                DispatchQueue.main.async {
-                        self.cameraRunning = CameraState.paused
-                        self.parent?.startStopVideoButton = "Resume"
-                }
+                self.cameraRunning = CameraState.paused
+                self.parent?.startStopVideoButton = "Resume"
+
+//                DispatchQueue.main.async {
+//                        self.cameraRunning = CameraState.paused
+//                        self.parent?.startStopVideoButton = "Resume"
+//                }
             }else{
                 openCVWrapper.resumeCamera();
             }
@@ -44,9 +47,10 @@ class VideoDelegate: NSObject, OpenCVWrapperDelegate{
                 let hrFrequencyICA = calculateHeartRateFromICA()
                 heartRateStr = NSString(format: "Heart Rate %.1f/%.1f", hrFrequency, hrFrequencyICA) as String
             }
-            DispatchQueue.main.async {
-                    self.parent?.heartRateLabel = heartRateStr
-            }
+            self.parent?.heartRateLabel = heartRateStr
+//            DispatchQueue.main.async {
+//                    self.parent?.heartRateLabel = heartRateStr
+//            }
 
 
 //            DispatchQueue.main.async {
@@ -157,7 +161,7 @@ struct ContentView: View {
                 Text(startStopVideoButton)
                 .frame(minWidth: 0, maxWidth: .infinity)
                 .padding(10)
-                .font(Font.system(size: 24))
+                .font(Font.system(size: 36))
             }
             .background(Color.blue)
             .foregroundColor(.white)

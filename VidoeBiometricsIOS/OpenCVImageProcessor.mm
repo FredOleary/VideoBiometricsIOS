@@ -220,7 +220,9 @@
         self.videoProcessingPaused = true;
         CFTimeInterval elapsedTime = CACurrentMediaTime() - startTime;
         double fps = (double)framesPerHrReading/elapsedTime;
-        [self.delegate framesProcessed:framesPerHrReading :redPixel :greenPixel :bluePixel :fps ];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.delegate framesProcessed:self->framesPerHrReading :self->redPixel :self->greenPixel :self->bluePixel :fps ];
+        });
     }
 }
 -(UIImage*) animateHeartIcon :(CGRect&) iconRect :(UIImage*) outImage {

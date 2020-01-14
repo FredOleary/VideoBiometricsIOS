@@ -33,6 +33,8 @@ struct ContentView: View {
                     ButtonImage(imageAsset:"Video-camera")
                 }
                 .padding(.leading, 10)
+                .buttonStyle(ToolbarButtonStyle( state:self.showVideo))
+                
                 Spacer()
                 Button(action: {
                     self.showVideo = false
@@ -40,8 +42,9 @@ struct ContentView: View {
                     self.showFiltered = false
                 }) {
                     ButtonImage(imageAsset:"Raw-waveform")
-
                 }
+                .buttonStyle(ToolbarButtonStyle( state:self.showRaw))
+                
                 Spacer()
                 Button(action: {
                     self.showVideo = false
@@ -49,8 +52,9 @@ struct ContentView: View {
                     self.showFiltered = true
                 }) {
                     ButtonImage(imageAsset:"Filtered-waveform")
-
                 }
+                .buttonStyle(ToolbarButtonStyle( state:self.showFiltered))
+                
                 Spacer()
                 Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/) {
                     Text("FFT")
@@ -128,5 +132,13 @@ struct ButtonImage: View {
             .resizable()
             .scaledToFit()
             .frame(width: 32.0,height:32.0)
+    }
+}
+
+struct  yle: ButtonStyle {
+    var state:Bool
+    func makeBody(configuration: Self.Configuration) -> some View {
+        configuration.label
+            .scaleEffect(state ? 1.5 : 1.0)
     }
 }

@@ -22,8 +22,8 @@ struct RawChartView: UIViewRepresentable {
     var parent:ContentView
     
     func updateUIView(_ lineChart: LineChartView, context: Context) {
-        lineChart.chartDescription?.text = "ICA RGB data"
-        lineChart.backgroundColor = UIColor.green
+        lineChart.chartDescription?.text = "Raw RGB data"
+//        lineChart.backgroundColor = UIColor.green
         parent.lineChartsRaw.setLineChart( lineChart )
     }
     

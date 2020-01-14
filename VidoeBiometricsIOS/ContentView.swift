@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Charts
 
 class VideoDelegate: NSObject, OpenCVWrapperDelegate{
     
@@ -48,6 +49,7 @@ class VideoDelegate: NSObject, OpenCVWrapperDelegate{
                 heartRateStr = NSString(format: "Heart Rate %.1f/%.1f", hrFrequency, hrFrequencyICA) as String
             }
             self.parent?.heartRateLabel = heartRateStr
+            self.updateRawWaveform()
 //            DispatchQueue.main.async {
 //                    self.parent?.heartRateLabel = heartRateStr
 //            }
@@ -92,6 +94,37 @@ class VideoDelegate: NSObject, OpenCVWrapperDelegate{
         return heartRateCalculation!.heartRateFrequencyICA! * 60.0
     }
 
+    func updateRawWaveform(){
+        if let timeSeries = heartRateCalculation!.timeSeries {
+            let data = LineChartData()
+            if let redData = heartRateCalculation!.normalizedRedAmplitude  {
+                addLine(data, redData, timeSeries, color:[NSUIColor.red], "Red")
+            }
+            if let greenData = heartRateCalculation!.normalizedGreenAmplitude  {
+                addLine(data, greenData, timeSeries, color:[NSUIColor.green], "Green")
+
+            }
+            if let blueData = heartRateCalculation!.normalizedBlueAmplitude  {
+                addLine(data, blueData, timeSeries, color:[NSUIColor.blue], "Blue")
+            }
+            parent!.lineChartsRaw.lineChart!.data = data
+            parent!.lineChartsRaw.lineChart!.chartDescription!.text = "Raw RGB data (Normalized)"
+        }
+    }
+    func addLine( _ lineChartData:LineChartData, _ yData:[Double], _ xData:[Double], color:[NSUIColor], _ name:String) {
+        var lineChartEntry  = [ChartDataEntry]() //this is the Array that will eventually be displayed on the graph.
+        
+        for i in 0..<yData.count {
+            let value = ChartDataEntry(x: xData[i], y: yData[i])
+            lineChartEntry.append(value) // here we add it to the data set
+        }
+
+        let line1 = LineChartDataSet(entries: lineChartEntry, label: name) //Here we convert lineChartEntry to a LineChartDataSet
+        line1.drawCirclesEnabled = false
+        line1.colors = color
+        lineChartData.addDataSet(line1) //Adds the line to the dataSet
+
+    }
 }
 
 
@@ -103,6 +136,7 @@ struct ContentView: View {
     
     @State var showVideo = true
     @State var showRaw = false
+    @State var showFiltered = false
     @State var startStopVideoButton = "Start"
     @State var heartRateLabel = "Heart Rate: N/A"
     @State var progressBarValue:CGFloat = 0
@@ -122,21 +156,32 @@ struct ContentView: View {
                 Button(action: {
                     self.showVideo = true
                     self.showRaw = false
+                    self.showFiltered = false
                 }) {
-                    Text("Video")
-                
+                    ButtonImage(imageAsset:"Video-camera")
+//                    Image("Video-camera")
+//                        .resizable()
+//                        .scaledToFit()
+//                        .frame(width: 32.0,height:32.0)
                 }
+                .padding(.leading, 10)
                 Spacer()
                 Button(action: {
                     self.showVideo = false
                     self.showRaw = true
-
+                    self.showFiltered = false
                 }) {
-                    Text("Raw")
+                    ButtonImage(imageAsset:"Raw-waveform")
+
                 }
                 Spacer()
-                Button(action: {}) {
-                    Text("Filtered")
+                Button(action: {
+                    self.showVideo = false
+                    self.showRaw = false
+                    self.showFiltered = true
+                }) {
+                    ButtonImage(imageAsset:"Filtered-waveform")
+
                 }
                 Spacer()
                 Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/) {
@@ -213,4 +258,14 @@ enum CameraState {
     case stopped
     case running
     case paused
+}
+
+struct ButtonImage: View {
+    var imageAsset:String
+    var body: some View {
+        Image(imageAsset)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 32.0,height:32.0)
+    }
 }

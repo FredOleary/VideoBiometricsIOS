@@ -31,6 +31,8 @@
 		53D6EB2623C9623900679BCC /* TestAccelerate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6EB2523C9623900679BCC /* TestAccelerate.swift */; };
 		53D6EB2823C962DF00679BCC /* RGBSampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6EB2723C962DF00679BCC /* RGBSampleData.swift */; };
 		53D6EB2A23C9633C00679BCC /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6EB2923C9633C00679BCC /* Settings.swift */; };
+		53D6EB4C23CD439F00679BCC /* VideoProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6EB4B23CD439F00679BCC /* VideoProcessor.swift */; };
+		53D6EB4E23CD447C00679BCC /* FilteredDataChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6EB4D23CD447C00679BCC /* FilteredDataChartView.swift */; };
 		59BB64B943AC29BF24B34114 /* Pods_VidoeBiometricsIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9B31DEEC719EEC0E91B0908 /* Pods_VidoeBiometricsIOS.framework */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +66,8 @@
 		53D6EB2523C9623900679BCC /* TestAccelerate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestAccelerate.swift; sourceTree = "<group>"; };
 		53D6EB2723C962DF00679BCC /* RGBSampleData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RGBSampleData.swift; sourceTree = "<group>"; };
 		53D6EB2923C9633C00679BCC /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		53D6EB4B23CD439F00679BCC /* VideoProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoProcessor.swift; sourceTree = "<group>"; };
+		53D6EB4D23CD447C00679BCC /* FilteredDataChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilteredDataChartView.swift; sourceTree = "<group>"; };
 		D9B31DEEC719EEC0E91B0908 /* Pods_VidoeBiometricsIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VidoeBiometricsIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA83E61BA0C74F54FDB92174 /* Pods-VidoeBiometricsIOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VidoeBiometricsIOS.release.xcconfig"; path = "Target Support Files/Pods-VidoeBiometricsIOS/Pods-VidoeBiometricsIOS.release.xcconfig"; sourceTree = "<group>"; };
 		F0A6F3916DC8557C9702DB0B /* Pods-VidoeBiometricsIOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VidoeBiometricsIOS.debug.xcconfig"; path = "Target Support Files/Pods-VidoeBiometricsIOS/Pods-VidoeBiometricsIOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -145,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				53D6EB1123C8DD1B00679BCC /* RawDataChartView.swift */,
+				53D6EB4D23CD447C00679BCC /* FilteredDataChartView.swift */,
 				53D6EB1423C8E0C800679BCC /* VideoView.swift */,
 			);
 			name = Views;
@@ -165,10 +170,11 @@
 		53D6EB1823C95F4F00679BCC /* VideoAnalysis */ = {
 			isa = PBXGroup;
 			children = (
+				53D6EB4B23CD439F00679BCC /* VideoProcessor.swift */,
+				53D6EB1923C9600700679BCC /* HeartRateCalculation.swift */,
 				53D6EB2723C962DF00679BCC /* RGBSampleData.swift */,
 				53D6EB2523C9623900679BCC /* TestAccelerate.swift */,
 				53D6EB1A23C9600700679BCC /* fft.swift */,
-				53D6EB1923C9600700679BCC /* HeartRateCalculation.swift */,
 				53D6EB1D23C9600700679BCC /* ICA.swift */,
 				53D6EB1E23C9600700679BCC /* Matrix.swift */,
 				53D6EB1B23C9600700679BCC /* SVD.swift */,
@@ -309,6 +315,7 @@
 				53D6EB2A23C9633C00679BCC /* Settings.swift in Sources */,
 				53691D4D23C570630015B86C /* OpenCVWrapper.mm in Sources */,
 				53D6EB1223C8DD1B00679BCC /* RawDataChartView.swift in Sources */,
+				53D6EB4C23CD439F00679BCC /* VideoProcessor.swift in Sources */,
 				53D6EB2823C962DF00679BCC /* RGBSampleData.swift in Sources */,
 				53D6EB2323C9600700679BCC /* ICA.swift in Sources */,
 				53691D3523C5431F0015B86C /* AppDelegate.swift in Sources */,
@@ -318,6 +325,7 @@
 				53691D3723C5431F0015B86C /* SceneDelegate.swift in Sources */,
 				53D6EB1023C8DC1D00679BCC /* LineCharts.swift in Sources */,
 				53D6EB2223C9600700679BCC /* TemporalFilter.swift in Sources */,
+				53D6EB4E23CD447C00679BCC /* FilteredDataChartView.swift in Sources */,
 				53691D3923C5431F0015B86C /* ContentView.swift in Sources */,
 				53D6EB2123C9600700679BCC /* SVD.swift in Sources */,
 			);

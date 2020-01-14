@@ -11,16 +11,16 @@ import SwiftUI
 struct VideoView: View {
     var bgColor: Color
 //    var openCVWrapper:OpenCVWrapper
-    var videoDelegate:VideoDelegate
+    var videoProcessor:VideoProcessor
     
     @State var videoFrame: UIImage = UIImage(imageLiteralResourceName: "Heart-icon")
     
 //    init( bgColor:Color, cvWrapper:OpenCVWrapper, videoDelegate:VideoDelegate ){
-    init( bgColor:Color, videoDelegate:VideoDelegate ){
+    init( bgColor:Color, videoDelegate:VideoProcessor ){
         print("VideoView-init()")
         self.bgColor = bgColor
 //        self.openCVWrapper = cvWrapper
-        self.videoDelegate = videoDelegate
+        self.videoProcessor = videoDelegate
         
 //        print("\(openCVWrapper.openCVVersionString())")
     }
@@ -39,6 +39,6 @@ struct VideoView: View {
         
     }
     private func fixupVideoFrame(){
-        videoDelegate.videoView = self
+        videoProcessor.videoView = self
     }
 }

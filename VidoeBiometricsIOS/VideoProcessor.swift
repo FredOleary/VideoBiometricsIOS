@@ -17,6 +17,7 @@ enum CameraState {
 enum HeartRateSeries {
     case rawData
     case filteredData
+    case fftData
 }
 
 class VideoProcessor: NSObject, OpenCVWrapperDelegate{
@@ -59,30 +60,19 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
                 heartRateStr = NSString(format: "Heart Rate %.1f/%.1f", hrFrequency, hrFrequencyICA) as String
             }
             self.parent?.heartRateLabel = heartRateStr
-            self.updateWaveform(lineChartView: parent!.lineChartsRaw, dataSeries: HeartRateSeries.rawData)
-            self.updateWaveform(lineChartView: parent!.lineChartsFiltered, dataSeries: HeartRateSeries.filteredData)
-            //            self.updateRawWaveform()
-//            self.updateFilteredWaveform()
-//            DispatchQueue.main.async {
-//                    self.parent?.heartRateLabel = heartRateStr
-//            }
-
-
-//            DispatchQueue.main.async {
-//                self.heartRateLabel.text = heartRateStr
-//                self.rawDelegate?.dataReady()
-//                self.fftDelegate?.dataReady()
-//                self.filteredDelegate?.dataReady()
-//                self.ICADelegate?.dataReady()
-//                self.ICAFFTDelegate?.dataReady()
-//            }
+            self.updateRawChart()
+            self.updateFilteredChart()
+            self.updateFFTChart()
         }
     }
-    func initialize( parent:ContentView){
-        openCVWrapper.delegate = self
-        heartRateCalculation = HeartRateCalculation( openCVWrapper )
-        self.parent = parent
-        openCVWrapper.initializeCamera(300)
+    func updateRawChart(){
+        self.updateWaveform(lineChartView: parent!.lineChartsRaw, dataSeries: HeartRateSeries.rawData, "Raw RGB")
+    }
+    func updateFilteredChart(){
+        self.updateWaveform(lineChartView: parent!.lineChartsFiltered, dataSeries: HeartRateSeries.filteredData, "Filtered RGB")
+    }
+    func updateFFTChart(){
+        self.updateFFT(barChartView: parent!.barChartsFFT, dataSeries: HeartRateSeries.fftData, "FFT of filtered data")
     }
     func startStopCamera(){
         if( cameraRunning == CameraState.stopped ){
@@ -100,14 +90,21 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
         }
 
     }
-    func calculateHeartRate() -> Double{
+    func initialize( parent:ContentView){
+        openCVWrapper.delegate = self
+        heartRateCalculation = HeartRateCalculation( openCVWrapper )
+        self.parent = parent
+        openCVWrapper.initializeCamera(300)
+    }
+
+    private func calculateHeartRate() -> Double{
         return heartRateCalculation!.heartRateFrequency! * 60.0
     }
-    func calculateHeartRateFromICA() -> Double{
+    private func calculateHeartRateFromICA() -> Double{
         return heartRateCalculation!.heartRateFrequencyICA! * 60.0
     }
 
-    func updateWaveform( lineChartView:LineCharts?, dataSeries:HeartRateSeries ){
+    private func updateWaveform( lineChartView:LineCharts?, dataSeries:HeartRateSeries, _ description:String){
         if let lineChart = lineChartView?.lineChart {
             let (red, green, blue) = getRDBdata(dataSeries )
             
@@ -124,49 +121,14 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
                     addLine(data, blueData, timeSeries, color:[NSUIColor.blue], "Blue")
                 }
                 lineChart.data = data
-                lineChart.chartDescription!.text = "Raw RGB data (Normalized)"
+                lineChart.chartDescription!.text = description
+                lineChart.chartDescription!.font = .systemFont(ofSize: 16, weight: .light)
             }
         }
     }
 
-//    func updateRawWaveform(){
-//        if let timeSeries = heartRateCalculation!.timeSeries {
-//            let data = LineChartData()
-//            if let redData = heartRateCalculation!.normalizedRedAmplitude  {
-//                addLine(data, redData, timeSeries, color:[NSUIColor.red], "Red")
-//            }
-//            if let greenData = heartRateCalculation!.normalizedGreenAmplitude  {
-//                addLine(data, greenData, timeSeries, color:[NSUIColor.green], "Green")
-//
-//            }
-//            if let blueData = heartRateCalculation!.normalizedBlueAmplitude  {
-//                addLine(data, blueData, timeSeries, color:[NSUIColor.blue], "Blue")
-//            }
-//            parent!.lineChartsRaw.lineChart!.data = data
-//            parent!.lineChartsRaw.lineChart!.chartDescription!.text = "Raw RGB data (Normalized)"
-//        }
-//    }
-//
-//    func updateFilteredWaveform(){
-//        if let timeSeries = heartRateCalculation!.timeSeries {
-//            let data = LineChartData()
-//            if let redData = heartRateCalculation!.filteredRedAmplitude  {
-//                addLine(data, redData, timeSeries, color:[NSUIColor.red], "Red")
-//            }
-//            if let greenData = heartRateCalculation!.filteredGreenAmplitude  {
-//                addLine(data, greenData, timeSeries, color:[NSUIColor.green], "Green")
-//
-//            }
-//            if let blueData = heartRateCalculation!.filteredBlueAmplitude  {
-//                addLine(data, blueData, timeSeries, color:[NSUIColor.blue], "Blue")
-//            }
-//            parent!.lineChartsFiltered.lineChart!.data = data
-//            parent!.lineChartsFiltered.lineChart!.chartDescription!.text = "Filtered RGB data (Normalized)"
-//        }
-//    }
-
     
-    func addLine( _ lineChartData:LineChartData, _ yData:[Double], _ xData:[Double], color:[NSUIColor], _ name:String) {
+    private func addLine( _ lineChartData:LineChartData, _ yData:[Double], _ xData:[Double], color:[NSUIColor], _ name:String) {
         var lineChartEntry  = [ChartDataEntry]() //this is the Array that will eventually be displayed on the graph.
         
         for i in 0..<yData.count {
@@ -180,7 +142,66 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
         lineChartData.addDataSet(line1) //Adds the line to the dataSet
 
     }
-    func getRDBdata( _ dataSeries:HeartRateSeries ) -> ([Double]?, [Double]?, [Double]?){
+    
+    private func updateFFT( barChartView:BarCharts?, dataSeries:HeartRateSeries, _ description:String ){
+        if let barChart = barChartView?.barChart {
+            let (red, green, blue) = getRDBdata(dataSeries )
+            
+            if let timeSeries = heartRateCalculation!.FFTRedFrequency {
+                if( timeSeries.count > 0){
+                    let timeWidth = timeSeries[timeSeries.count-1] - timeSeries[0]; // total X time
+                    let groupWidth = timeWidth/Double(timeSeries.count)
+                    let groupSpace = groupWidth/4.0
+                    let barSpace = groupWidth/8.0
+                    let barWidth = groupWidth/8.0
+                    // (barSpace + barWidth) * 3 + groupSpace= groupWidth
+
+                    let data = BarChartData()
+                    data.barWidth = barWidth
+
+                    let redFreq = NSString(format: "Red BPM %.1f", (heartRateCalculation!.heartRateRedFrequency! * 60))
+                    let greenFreq = NSString(format: "Green BPM %.1f", (heartRateCalculation!.heartRateGreenFrequency! * 60))
+                    let blueFreq = NSString(format: "Blue BPM %.1f", (heartRateCalculation!.heartRateBlueFrequency! * 60))
+                    
+                    if let redData = red  {
+                        addBar(data, redData, timeSeries, color:[NSUIColor.red], redFreq as String)
+                    }
+                    if let greenData = green {
+                        addBar(data, greenData, timeSeries, color:[NSUIColor.green], greenFreq as String)
+                    }
+                    if let blueData = blue {
+                        addBar(data, blueData, timeSeries, color:[NSUIColor.blue], blueFreq as String)
+                    }
+
+                    barChart.xAxis.axisMinimum = timeSeries[0];
+                    barChart.xAxis.axisMaximum = timeSeries[timeSeries.count-1]
+                    
+                    data.groupBars(fromX: timeSeries[0], groupSpace:groupSpace, barSpace: barSpace)
+                    data.setValueFont(.systemFont(ofSize: 0, weight: .light))
+                    
+                    barChart.data = data
+                    barChart.chartDescription?.text = description
+                    barChart.chartDescription?.font = .systemFont(ofSize: 16, weight: .light)
+                    barChart.legend.font = .systemFont(ofSize: 16, weight: .light)
+                }
+           }
+        }
+    }
+
+    private func addBar( _ barChartData:BarChartData, _ yData:[Double], _ xData:[Double], color:[NSUIColor], _ name:String) {
+        var barChartEntry  = [BarChartDataEntry]()
+        for i in 0..<yData.count {
+            let value = BarChartDataEntry(x: xData[i], y: yData[i]) // here we set the X and Y status in a data chart entry
+            barChartEntry.append(value)
+        }
+
+        let bar1 = BarChartDataSet(entries: barChartEntry, label: name)
+        bar1.colors = color
+        bar1.drawValuesEnabled = false
+        barChartData.addDataSet(bar1)
+    }
+
+    private func getRDBdata( _ dataSeries:HeartRateSeries ) -> ([Double]?, [Double]?, [Double]?){
         let red:[Double]?
         let green:[Double]?
         let blue:[Double]?
@@ -191,6 +212,9 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
         
         case .filteredData:
             return (heartRateCalculation!.filteredRedAmplitude, heartRateCalculation!.filteredGreenAmplitude, heartRateCalculation!.filteredBlueAmplitude)
+
+        case .fftData:
+            return (heartRateCalculation!.FFTRedAmplitude, heartRateCalculation!.FFTGreenAmplitude, heartRateCalculation!.FFTBlueAmplitude)
 
         default:
             return (red, green, blue)

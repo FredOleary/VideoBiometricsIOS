@@ -13,6 +13,8 @@ struct ContentView: View {
     @State var showVideo = true
     @State var showRaw = false
     @State var showFiltered = false
+    @State var showFFT = false
+    
     @State var startStopVideoButton = "Start"
     @State var heartRateLabel = "Heart Rate: N/A"
     @State var progressBarValue:CGFloat = 0
@@ -20,6 +22,7 @@ struct ContentView: View {
 
     var lineChartsRaw = LineCharts()
     var lineChartsFiltered = LineCharts()
+    var barChartsFFT = BarCharts()
     let videoProcessor = VideoProcessor()
         
     var body: some View {
@@ -29,6 +32,7 @@ struct ContentView: View {
                     self.showVideo = true
                     self.showRaw = false
                     self.showFiltered = false
+                    self.showFFT = false
                 }) {
                     ButtonImage(imageAsset:"Video-camera")
                 }
@@ -40,6 +44,7 @@ struct ContentView: View {
                     self.showVideo = false
                     self.showRaw = true
                     self.showFiltered = false
+                    self.showFFT = false
                 }) {
                     ButtonImage(imageAsset:"Raw-waveform")
                 }
@@ -50,15 +55,23 @@ struct ContentView: View {
                     self.showVideo = false
                     self.showRaw = false
                     self.showFiltered = true
+                    self.showFFT = false
                 }) {
                     ButtonImage(imageAsset:"Filtered-waveform")
                 }
                 .buttonStyle(ToolbarButtonStyle( state:self.showFiltered))
                 
                 Spacer()
-                Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/) {
+                Button(action: {
+                    self.showVideo = false
+                    self.showRaw = false
+                    self.showFiltered = false
+                    self.showFFT = true
+                }) {
                     Text("FFT")
                 }
+
+
             }
             HStack{
                 Text(frameNumberLabel).padding(.leading)
@@ -86,6 +99,9 @@ struct ContentView: View {
             }
             if showFiltered{
                 FilteredDataChartView( parent:self )
+            }
+            if showFFT{
+                FftDataChartView(parent:self)
             }
             Spacer()
         }.onAppear(perform: {self.videoProcessor.initialize( parent:self )})
@@ -135,7 +151,7 @@ struct ButtonImage: View {
     }
 }
 
-struct  yle: ButtonStyle {
+struct ToolbarButtonStyle: ButtonStyle {
     var state:Bool
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label

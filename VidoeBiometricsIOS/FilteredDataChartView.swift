@@ -15,6 +15,10 @@ struct FilteredDataChartView : View {
     var body: some View {
         FilteredChartView( parent:parent)
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+            .onAppear(perform: updateChart)
+    }
+    func updateChart(){
+        parent.videoProcessor.updateFilteredChart()
     }
 }
 

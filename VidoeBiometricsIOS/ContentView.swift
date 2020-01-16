@@ -13,7 +13,9 @@ enum MainView {
     case rawData
     case filteredData
     case FFTData
+    case filteredICAData
     case settings
+    case FFTICAData
 }
 
 
@@ -35,47 +37,68 @@ struct ContentView: View {
         
     var body: some View {
         VStack{
-            HStack( spacing: 20){
-                Button(action: {
-                    self.mainView = MainView.video
-                }) {
-                    ButtonImage(imageAsset:"Video-camera")
+            HStack{
+                Group{
+                    tbButton(parent:self, imageAsset:"Video-camera", toState:MainView.video,  selected:testSelected(state:mainView, checkState:MainView.video), leading:10, trailing:0)
+                    Spacer()
+                    tbButton(parent:self, imageAsset:"Raw-waveform", toState:MainView.rawData,  selected:testSelected(state:mainView, checkState:MainView.rawData), leading:0, trailing:0)
+                    Spacer()
+                    tbButton(parent:self, imageAsset:"Filtered-waveform", toState:MainView.filteredData,  selected:testSelected(state:mainView, checkState:MainView.filteredData), leading:0, trailing:0)
+                    Spacer()
+                    tbButton(parent:self, imageAsset:"FFT-waveform", toState:MainView.FFTData,  selected:testSelected(state:mainView, checkState:MainView.FFTData), leading:0, trailing:0)
+                   
                 }
-                .padding(.leading, 10)
-                .buttonStyle(ToolbarButtonStyle( state:mainView == MainView.video))
-                
-                Spacer()
-                Button(action: {
-                    self.mainView = MainView.rawData
-                }) {
-                    ButtonImage(imageAsset:"Raw-waveform")
+                Group{
+                    Spacer()
+                    tbButton(parent:self, imageAsset:"Filtered-ICA-waveform", toState:MainView.filteredICAData,  selected:testSelected(state:mainView, checkState:MainView.filteredICAData), leading:0, trailing:0)
+
+                    Spacer()
+                    tbButton(parent:self, imageAsset:"Filtered-ICA-waveform", toState:MainView.FFTICAData,  selected:testSelected(state:mainView, checkState:MainView.FFTICAData), leading:0, trailing:0)
+
+                    Spacer()
+                    tbButton(parent:self, imageAsset:"settings", toState:MainView.settings,  selected:testSelected(state:mainView, checkState:MainView.settings), leading:0, trailing:10)
                 }
-                .buttonStyle(ToolbarButtonStyle( state:mainView == MainView.rawData))
-                
-                Spacer()
-                Button(action: {
-                    self.mainView = MainView.filteredData
-                }) {
-                    ButtonImage(imageAsset:"Filtered-waveform")
-                }
-                .buttonStyle(ToolbarButtonStyle( state:mainView == MainView.filteredData))
-                
-                Spacer()
-                Button(action: {
-                    self.mainView = MainView.FFTData
-                }) {
-                     ButtonImage(imageAsset:"FFT-waveform")
-                }
-                .buttonStyle(ToolbarButtonStyle( state:mainView == MainView.FFTData))
-                
-                Spacer()
-                Button(action: {
-                    self.mainView = MainView.settings
-                }) {
-                     ButtonImage(imageAsset:"settings")
-                }
-                .padding(.trailing, 10)
-                .buttonStyle(ToolbarButtonStyle( state:mainView == MainView.settings))
+//                    Button(action: {
+//                        self.mainView = MainView.rawData
+//                    }) {
+//                        ButtonImage(imageAsset:"Raw-waveform")
+//                    }
+//                    .buttonStyle(ToolbarButtonStyle( state:mainView == MainView.rawData))
+                    
+//                    Spacer()
+//                    Button(action: {
+//                        self.mainView = MainView.filteredData
+//                    }) {
+//                        ButtonImage(imageAsset:"Filtered-waveform")
+//                    }
+//                    .buttonStyle(ToolbarButtonStyle( state:mainView == MainView.filteredData))
+                    
+//                    Spacer()
+//                    Button(action: {
+//                        self.mainView = MainView.FFTData
+//                    }) {
+//                         ButtonImage(imageAsset:"FFT-waveform")
+//                    }
+//                    .buttonStyle(ToolbarButtonStyle( state:mainView == MainView.FFTData))
+//                }
+//                Group{
+//                    Spacer()
+//                    Button(action: {
+//                        self.mainView = MainView.filteredICAData
+//                    }) {
+//                        ButtonImage(imageAsset:"Filtered-ICA-waveform")
+//                    }
+//                    .buttonStyle(ToolbarButtonStyle( state:mainView == MainView.filteredICAData))
+//
+//                    Spacer()
+//                    Button(action: {
+//                        self.mainView = MainView.settings
+//                    }) {
+//                        ButtonImage(imageAsset:"settings")
+//                    }
+//                    .padding(.trailing, 10)
+//                    .buttonStyle(ToolbarButtonStyle( state:mainView == MainView.settings))
+//                }
 
             }
             HStack{
@@ -113,7 +136,9 @@ struct ContentView: View {
             }
             Spacer()
         }.onAppear(perform: {self.videoProcessor.initialize( parent:self )})
-        
+    }
+    func testSelected( state:MainView,  checkState:MainView ) ->Bool{
+        return (state == checkState)
     }
 }
 
@@ -149,20 +174,45 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 
-struct ButtonImage: View {
-    var imageAsset:String
-    var body: some View {
-        Image(imageAsset)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 32.0,height:32.0)
-    }
-}
+//struct ButtonImage: View {
+//    var imageAsset:String
+//    var body: some View {
+//        Image(imageAsset)
+//            .resizable()
+//            .scaledToFit()
+//            .frame(width: 32.0,height:32.0)
+//    }
+//}
 
 struct ToolbarButtonStyle: ButtonStyle {
     var state:Bool
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .scaleEffect(state ? 1.5 : 1.0)
+    }
+}
+
+struct tbButton: View {
+    var parent:ContentView
+    var imageAsset:String
+    var toState:MainView
+    var selected:Bool
+    var leading:CGFloat
+    var trailing:CGFloat
+    var body: some View {
+        Button(action: {
+            self.parent.mainView = self.toState
+        }) {
+//            ButtonImage(imageAsset:imageAsset)
+            Image(imageAsset)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 32.0,height:32.0)
+
+        }
+        .padding(.leading, leading)
+        .padding(.trailing, trailing)
+
+        .buttonStyle(ToolbarButtonStyle( state: selected ))
     }
 }

@@ -33,6 +33,7 @@ struct ContentView: View {
     var lineChartsRaw = LineCharts()
     var lineChartsFiltered = LineCharts()
     var barChartsFFT = BarCharts()
+    var lineChartsFilteredICA = LineCharts()
     let videoProcessor = VideoProcessor()
         
     var body: some View {
@@ -53,7 +54,7 @@ struct ContentView: View {
                     tbButton(parent:self, imageAsset:"Filtered-ICA-waveform", toState:MainView.filteredICAData,  selected:testSelected(state:mainView, checkState:MainView.filteredICAData), leading:0, trailing:0)
 
                     Spacer()
-                    tbButton(parent:self, imageAsset:"Filtered-ICA-waveform", toState:MainView.FFTICAData,  selected:testSelected(state:mainView, checkState:MainView.FFTICAData), leading:0, trailing:0)
+                    tbButton(parent:self, imageAsset:"FFT-ICA-waveform", toState:MainView.FFTICAData,  selected:testSelected(state:mainView, checkState:MainView.FFTICAData), leading:0, trailing:0)
 
                     Spacer()
                     tbButton(parent:self, imageAsset:"settings", toState:MainView.settings,  selected:testSelected(state:mainView, checkState:MainView.settings), leading:0, trailing:10)
@@ -119,20 +120,26 @@ struct ContentView: View {
             .background(Color.blue)
             .foregroundColor(.white)
 
-            if mainView == MainView.video {
-                VideoView(bgColor: .blue, videoDelegate: videoProcessor)
-            }
-            if  mainView == MainView.rawData {
-                RawDataChartView( parent:self )
-            }
-            if  mainView == MainView.filteredData {
-                FilteredDataChartView( parent:self )
-            }
-            if  mainView == MainView.FFTData {
-                FftDataChartView(parent:self)
-            }
-            if  mainView == MainView.settings {
-                SettingsView(parent:self)
+            Group{
+                if mainView == MainView.video {
+                    VideoView(bgColor: .blue, videoDelegate: videoProcessor)
+                }
+                if  mainView == MainView.rawData {
+                    RawDataChartView( parent:self )
+                }
+                if  mainView == MainView.filteredData {
+                    FilteredDataChartView( parent:self )
+                }
+                if  mainView == MainView.FFTData {
+                    FftDataChartView(parent:self)
+                }
+                if  mainView == MainView.filteredICAData {
+                    FilteredICADataChartView(parent:self)
+                }
+
+                if  mainView == MainView.settings {
+                    SettingsView(parent:self)
+                }
             }
             Spacer()
         }.onAppear(perform: {self.videoProcessor.initialize( parent:self )})

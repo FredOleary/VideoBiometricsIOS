@@ -8,13 +8,19 @@
 
 import SwiftUI
 
+enum MainView {
+    case video
+    case rawData
+    case filteredData
+    case FFTData
+    case settings
+}
+
+
 struct ContentView: View {
     
-    @State var showVideo = true
-    @State var showRaw = false
-    @State var showFiltered = false
-    @State var showFFT = false
-    
+    @State var mainView = MainView.video
+        
     @State var startStopVideoButton = "Start"
     @State var heartRateLabel = "Heart Rate: N/A"
     @State var progressBarValue:CGFloat = 0
@@ -29,48 +35,45 @@ struct ContentView: View {
         VStack{
             HStack( spacing: 20){
                 Button(action: {
-                    self.showVideo = true
-                    self.showRaw = false
-                    self.showFiltered = false
-                    self.showFFT = false
+                    self.mainView = MainView.video
                 }) {
                     ButtonImage(imageAsset:"Video-camera")
                 }
                 .padding(.leading, 10)
-                .buttonStyle(ToolbarButtonStyle( state:self.showVideo))
+                .buttonStyle(ToolbarButtonStyle( state:mainView == MainView.video))
                 
                 Spacer()
                 Button(action: {
-                    self.showVideo = false
-                    self.showRaw = true
-                    self.showFiltered = false
-                    self.showFFT = false
+                    self.mainView = MainView.rawData
                 }) {
                     ButtonImage(imageAsset:"Raw-waveform")
                 }
-                .buttonStyle(ToolbarButtonStyle( state:self.showRaw))
+                .buttonStyle(ToolbarButtonStyle( state:mainView == MainView.rawData))
                 
                 Spacer()
                 Button(action: {
-                    self.showVideo = false
-                    self.showRaw = false
-                    self.showFiltered = true
-                    self.showFFT = false
+                    self.mainView = MainView.filteredData
                 }) {
                     ButtonImage(imageAsset:"Filtered-waveform")
                 }
-                .buttonStyle(ToolbarButtonStyle( state:self.showFiltered))
+                .buttonStyle(ToolbarButtonStyle( state:mainView == MainView.filteredData))
                 
                 Spacer()
                 Button(action: {
-                    self.showVideo = false
-                    self.showRaw = false
-                    self.showFiltered = false
-                    self.showFFT = true
+                    self.mainView = MainView.FFTData
                 }) {
-                    Text("FFT")
+                     ButtonImage(imageAsset:"FFT-waveform")
                 }
-
+                .buttonStyle(ToolbarButtonStyle( state:mainView == MainView.FFTData))
+                
+                Spacer()
+                Button(action: {
+                    self.mainView = MainView.settings
+                }) {
+                     ButtonImage(imageAsset:"settings")
+                }
+                .padding(.trailing, 10)
+                .buttonStyle(ToolbarButtonStyle( state:mainView == MainView.settings))
 
             }
             HStack{
@@ -91,17 +94,20 @@ struct ContentView: View {
             .background(Color.blue)
             .foregroundColor(.white)
 
-            if showVideo {
+            if mainView == MainView.video {
                 VideoView(bgColor: .blue, videoDelegate: videoProcessor)
             }
-            if showRaw {
+            if  mainView == MainView.rawData {
                 RawDataChartView( parent:self )
             }
-            if showFiltered{
+            if  mainView == MainView.filteredData {
                 FilteredDataChartView( parent:self )
             }
-            if showFFT{
+            if  mainView == MainView.FFTData {
                 FftDataChartView(parent:self)
+            }
+            if  mainView == MainView.settings {
+                SettingsView(parent:self)
             }
             Spacer()
         }.onAppear(perform: {self.videoProcessor.initialize( parent:self )})

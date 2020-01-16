@@ -19,6 +19,7 @@
 		53691D5223C570760015B86C /* OpenCVImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 53691D5023C570760015B86C /* OpenCVImageProcessor.mm */; };
 		53691D5623C5710C0015B86C /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53691D5423C5710C0015B86C /* CoreMedia.framework */; };
 		53691D5723C5710C0015B86C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53691D5523C5710C0015B86C /* AVFoundation.framework */; };
+		53C393D123CF9A3400DE4622 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C393D023CF9A3400DE4622 /* SettingsView.swift */; };
 		53D6EB1023C8DC1D00679BCC /* LineCharts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6EB0F23C8DC1D00679BCC /* LineCharts.swift */; };
 		53D6EB1223C8DD1B00679BCC /* RawDataChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6EB1123C8DD1B00679BCC /* RawDataChartView.swift */; };
 		53D6EB1523C8E0C800679BCC /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6EB1423C8E0C800679BCC /* VideoView.swift */; };
@@ -56,6 +57,7 @@
 		53691D5023C570760015B86C /* OpenCVImageProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenCVImageProcessor.mm; sourceTree = "<group>"; };
 		53691D5423C5710C0015B86C /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		53691D5523C5710C0015B86C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		53C393D023CF9A3400DE4622 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		53D6EB0F23C8DC1D00679BCC /* LineCharts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LineCharts.swift; path = /Users/fredoleary/xcodeprojects/VidoeBiometricsIOS/VidoeBiometricsIOS/LineCharts.swift; sourceTree = "<absolute>"; };
 		53D6EB1123C8DD1B00679BCC /* RawDataChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawDataChartView.swift; sourceTree = "<group>"; };
 		53D6EB1423C8E0C800679BCC /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
@@ -114,7 +116,6 @@
 		53691D3323C5431F0015B86C /* VidoeBiometricsIOS */ = {
 			isa = PBXGroup;
 			children = (
-				53D6EB2923C9633C00679BCC /* Settings.swift */,
 				53D6EB1823C95F4F00679BCC /* VideoAnalysis */,
 				53D6EB1723C95EA400679BCC /* VideoCapture */,
 				53D6EB1323C8E07E00679BCC /* Views */,
@@ -123,6 +124,7 @@
 				53691D3823C5431F0015B86C /* ContentView.swift */,
 				53D6EB0F23C8DC1D00679BCC /* LineCharts.swift */,
 				53D6EB5123CE7FD000679BCC /* BarCharts.swift */,
+				53D6EB2923C9633C00679BCC /* Settings.swift */,
 				53691D3A23C543260015B86C /* Assets.xcassets */,
 				53691D3F23C543260015B86C /* LaunchScreen.storyboard */,
 				53691D4223C543260015B86C /* Info.plist */,
@@ -154,6 +156,7 @@
 			isa = PBXGroup;
 			children = (
 				53D6EB1123C8DD1B00679BCC /* RawDataChartView.swift */,
+				53C393D023CF9A3400DE4622 /* SettingsView.swift */,
 				53D6EB4F23CE7E4000679BCC /* FftDataChartView.swift */,
 				53D6EB4D23CD447C00679BCC /* FilteredDataChartView.swift */,
 				53D6EB1423C8E0C800679BCC /* VideoView.swift */,
@@ -336,6 +339,7 @@
 				53691D3923C5431F0015B86C /* ContentView.swift in Sources */,
 				53D6EB5223CE7FD000679BCC /* BarCharts.swift in Sources */,
 				53D6EB2123C9600700679BCC /* SVD.swift in Sources */,
+				53C393D123CF9A3400DE4622 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

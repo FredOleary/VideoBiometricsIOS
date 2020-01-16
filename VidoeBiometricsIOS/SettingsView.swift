@@ -10,7 +10,7 @@ import SwiftUI
 import Charts
 
 struct SettingsView : View {
-    @State var pauseBetweenSamples = false
+//    @State var pauseBetweenSamples = false
     @State var dummy1 = "0.7"
     @State var dummy2 = "1.4"
 
@@ -19,7 +19,7 @@ struct SettingsView : View {
     var body: some View {
         
         VStack {
-            Toggle(isOn: $pauseBetweenSamples) {
+            Toggle(isOn: parent.$userSettings.pauseBetweenSamples) {
                Text("Pause between samples")
             }
             .padding(EdgeInsets(top:0, leading: 10, bottom:0, trailing: 10 ))
@@ -31,10 +31,12 @@ struct SettingsView : View {
             }
             HStack {
                 Text("From: ")
-                TextField("Low Frequency", text: $dummy1)
+                TextField("Low Frequency", text: parent.$userSettings.filterStart)
+                    .keyboardType(.decimalPad)
                 Spacer()
                 Text("To: ")
-                TextField("High Frequency", text: $dummy2)
+                TextField("High Frequency", text: parent.$userSettings.filterEnd)
+                    .keyboardType(.decimalPad)
             }
             .padding(EdgeInsets(top:0, leading: 10, bottom:0, trailing: 10 ))
             SettingsChartView( parent:parent)

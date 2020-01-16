@@ -18,6 +18,8 @@ enum MainView {
 
 
 struct ContentView: View {
+    @ObservedObject var userSettings = UserSettings()
+    
     
     @State var mainView = MainView.video
         

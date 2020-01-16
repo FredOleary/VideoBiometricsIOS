@@ -29,7 +29,6 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
     var heartRateCalculation:HeartRateCalculation?
 
     func frameAvailable(_ frame: UIImage, _ heartRateProgress: Float, _ frameNumber: Int32) {
-//        print("VideoDelegate:frameAvailable")
         videoView?.videoFrame = frame
         parent!.progressBarValue = CGFloat(heartRateProgress)
         self.parent!.frameNumberLabel = NSString(format: "Frame: %d", frameNumber) as String
@@ -39,16 +38,10 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
     func framesReady(_ videoProcessingPaused: Bool) {
         print("ViewController: framesReady videoProcessingPaused: ", videoProcessingPaused)
         if( videoProcessingPaused){
-//            let pauseBetweenSamples = Settings.getPauseBetweenSamples()
-            let pauseBetweenSamples = true
+            let pauseBetweenSamples = Settings.getPauseBetweenSamples()
             if( pauseBetweenSamples ){
                 self.cameraRunning = CameraState.paused
                 self.parent?.startStopVideoButton = "Resume"
-
-//                DispatchQueue.main.async {
-//                        self.cameraRunning = CameraState.paused
-//                        self.parent?.startStopVideoButton = "Resume"
-//                }
             }else{
                 openCVWrapper.resumeCamera();
             }

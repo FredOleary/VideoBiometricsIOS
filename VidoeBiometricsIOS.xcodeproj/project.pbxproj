@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5307D0B423D002300050354F /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5307D0B323D002300050354F /* ViewModel.swift */; };
 		53691D3523C5431F0015B86C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53691D3423C5431F0015B86C /* AppDelegate.swift */; };
 		53691D3723C5431F0015B86C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53691D3623C5431F0015B86C /* SceneDelegate.swift */; };
 		53691D3923C5431F0015B86C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53691D3823C5431F0015B86C /* ContentView.swift */; };
@@ -40,6 +41,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5307D0B323D002300050354F /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		53691D3123C5431F0015B86C /* VidoeBiometricsIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VidoeBiometricsIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53691D3423C5431F0015B86C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		53691D3623C5431F0015B86C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				53D6EB1323C8E07E00679BCC /* Views */,
 				53691D3423C5431F0015B86C /* AppDelegate.swift */,
 				53691D3623C5431F0015B86C /* SceneDelegate.swift */,
+				5307D0B323D002300050354F /* ViewModel.swift */,
 				53691D3823C5431F0015B86C /* ContentView.swift */,
 				53D6EB0F23C8DC1D00679BCC /* LineCharts.swift */,
 				53D6EB5123CE7FD000679BCC /* BarCharts.swift */,
@@ -323,6 +326,7 @@
 				53691D5223C570760015B86C /* OpenCVImageProcessor.mm in Sources */,
 				53D6EB2A23C9633C00679BCC /* Settings.swift in Sources */,
 				53691D4D23C570630015B86C /* OpenCVWrapper.mm in Sources */,
+				5307D0B423D002300050354F /* ViewModel.swift in Sources */,
 				53D6EB1223C8DD1B00679BCC /* RawDataChartView.swift in Sources */,
 				53D6EB4C23CD439F00679BCC /* VideoProcessor.swift in Sources */,
 				53D6EB2823C962DF00679BCC /* RGBSampleData.swift in Sources */,

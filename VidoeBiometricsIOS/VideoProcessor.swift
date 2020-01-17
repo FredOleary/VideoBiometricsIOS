@@ -19,6 +19,7 @@ enum HeartRateSeries {
     case filteredData
     case fftData
     case filteredICAData
+    case fftICAData
 }
 
 class VideoProcessor: NSObject, OpenCVWrapperDelegate{
@@ -58,6 +59,7 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
             self.updateFilteredChart()
             self.updateFFTChart()
             self.updateFilteredICAChart()
+            self.updateFFTICAChart()
         }
     }
     func updateRawChart(){
@@ -69,9 +71,14 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
     func updateFFTChart(){
         self.updateFFT(barChartView: parent!.barChartsFFT, dataSeries: HeartRateSeries.fftData, "FFT of filtered data")
     }
+
     func updateFilteredICAChart(){
         self.updateWaveform(lineChartView: parent!.lineChartsFilteredICA, dataSeries: HeartRateSeries.filteredICAData, "Filtered (ICA) RGB")
     }
+    func updateFFTICAChart(){
+        self.updateFFT(barChartView: parent!.barChartsFFTICA, dataSeries: HeartRateSeries.fftICAData, "FFT of ICA data")
+    }
+    
     func startStopCamera(){
         if( cameraRunning == CameraState.stopped ){
             cameraRunning = CameraState.running;
@@ -217,7 +224,10 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
         case .filteredICAData:
             return (heartRateCalculation!.ICARedAmplitude, heartRateCalculation!.ICAGreenAmplitude, heartRateCalculation!.ICABlueAmplitude)
 
-            
+        case .fftICAData:
+            return (heartRateCalculation!.ICAFFTRedAmplitude, heartRateCalculation!.ICAFFTGreenAmplitude, heartRateCalculation!.ICAFFTBlueAmplitude)
+
+
         default:
             return ([Double](), [Double](), [Double]())
         }

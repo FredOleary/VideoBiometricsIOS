@@ -34,6 +34,7 @@ struct ContentView: View {
     var lineChartsFiltered = LineCharts()
     var barChartsFFT = BarCharts()
     var lineChartsFilteredICA = LineCharts()
+    var barChartsFFTICA = BarCharts()
     let videoProcessor = VideoProcessor()
         
     var body: some View {
@@ -136,7 +137,9 @@ struct ContentView: View {
                 if  mainView == MainView.filteredICAData {
                     FilteredICADataChartView(parent:self)
                 }
-
+                if  mainView == MainView.FFTICAData {
+                    FftICADataChartView(parent:self)
+                }
                 if  mainView == MainView.settings {
                     SettingsView(parent:self)
                 }

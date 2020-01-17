@@ -163,10 +163,17 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
 
                     let data = BarChartData()
                     data.barWidth = barWidth
-
-                    let redFreq = NSString(format: "Red BPM %.1f", (heartRateCalculation!.heartRateRedFrequency! * 60))
-                    let greenFreq = NSString(format: "Green BPM %.1f", (heartRateCalculation!.heartRateGreenFrequency! * 60))
-                    let blueFreq = NSString(format: "Blue BPM %.1f", (heartRateCalculation!.heartRateBlueFrequency! * 60))
+                    var hrRed = heartRateCalculation!.heartRateRedFrequency!
+                    var hrGreen = heartRateCalculation!.heartRateGreenFrequency!
+                    var hrBlue = heartRateCalculation!.heartRateBlueFrequency!
+                    if( dataSeries == HeartRateSeries.fftICAData){
+                        hrRed = heartRateCalculation!.ICAheartRateRedFrequency!
+                        hrGreen = heartRateCalculation!.ICAheartRateGreenFrequency!
+                        hrBlue = heartRateCalculation!.ICAheartRateBlueFrequency!
+                    }
+                    let redFreq = NSString(format: "Red BPM %.1f", (hrRed * 60))
+                    let greenFreq = NSString(format: "Green BPM %.1f", (hrGreen * 60))
+                    let blueFreq = NSString(format: "Blue BPM %.1f", (hrBlue * 60))
                     
                     if let redData = red  {
                         addBar(data, redData, timeSeries, color:[NSUIColor.red], redFreq as String)

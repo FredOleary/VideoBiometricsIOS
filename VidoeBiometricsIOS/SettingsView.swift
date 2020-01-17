@@ -8,13 +8,16 @@
 
 import SwiftUI
 import Charts
+class FrequencyChartHolder{
+    var combinedChartView:CombinedChartView?
+}
 
 struct SettingsView : View {
-//    @State var pauseBetweenSamples = false
-    @State var dummy1 = "0.7"
-    @State var dummy2 = "1.4"
 
     var parent:ContentView
+    var frequencyChartHolder = FrequencyChartHolder()
+    let startFrequency:Double = 15/60
+    let endFrequency:Double = 600/60
 
     var body: some View {
         
@@ -39,25 +42,65 @@ struct SettingsView : View {
                     .keyboardType(.decimalPad)
             }
             .padding(EdgeInsets(top:0, leading: 10, bottom:0, trailing: 10 ))
-            SettingsChartView( parent:parent)
+            SettingsChartView( parent:self.frequencyChartHolder)
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 300)
                     .onAppear(perform: updateChart)
         }
     }
-    func updateChart(){
-        parent.videoProcessor.updateFilteredChart()
+    private func updateChart(){
+        let temporalFilter: TemporalFilter = TemporalFilter()
+        let (filterResponse, freqs) = temporalFilter.getFilterResponse(
+            fps: 30.0,
+            filterStart: Settings.getFilterStart(),
+            filterEnd: Settings.getFilterEnd(),
+            startFrequency: startFrequency,
+            endFrequency: endFrequency )
+        
+        let data = CombinedChartData()
+        addLine(data, filterResponse, freqs, color:[NSUIColor.black], "RMS filter frequency response")
+        addFilterBars( data, Settings.getFilterStart(), Settings.getFilterEnd() )
+        
+        frequencyChartHolder.combinedChartView!.data = data
+        frequencyChartHolder.combinedChartView!.chartDescription?.text = "Filter response)"
     }
+    private func addLine( _ chartData:CombinedChartData, _ yData:[Double], _ xData:[Double], color:[NSUIColor], _ name:String) {
+        var lineChartEntry  = [ChartDataEntry]() //this is the Array that will eventually be displayed on the graph.
+        
+        for i in 0..<yData.count {
+            let value = ChartDataEntry(x: xData[i], y: yData[i])
+            lineChartEntry.append(value) // here we add it to the data set
+        }
+
+        let line1 = LineChartDataSet(entries: lineChartEntry, label: name) //Here we convert lineChartEntry to a LineChartDataSet
+        line1.drawCirclesEnabled = false
+        line1.drawValuesEnabled = false
+        line1.colors = color
+        chartData.lineData = LineChartData(dataSet: line1)
+    }
+    private func addFilterBars( _ chartData:CombinedChartData, _ filterStart:Double, _ filterEnd:Double ) {
+        let start = BarChartDataEntry(x: filterStart, y: 1.0)
+        let end = BarChartDataEntry(x: filterEnd, y: 1.0)
+        let filterBars:[BarChartDataEntry] = [start, end]
+        
+        let set = BarChartDataSet(entries: filterBars, label: "Filter band")
+        set.setColor(NSUIColor.red)
+
+        let data = BarChartData(dataSets: [set])
+        data.barWidth = 0.05
+        chartData.barData = data
+    }
+
 }
 
 struct SettingsChartView: UIViewRepresentable {
-    var parent:ContentView
+    var parent:FrequencyChartHolder
     
-    func updateUIView(_ lineChart: LineChartView, context: Context) {
-        parent.lineChartsFiltered.setLineChart( lineChart )
+    func updateUIView(_ combinedChartView: CombinedChartView, context: Context) {
+        parent.combinedChartView = combinedChartView
     }
     
-    func makeUIView(context: Context) -> LineChartView {
-        return LineChartView()
+    func makeUIView(context: Context) -> CombinedChartView {
+        return CombinedChartView()
     }
 
 }

@@ -33,7 +33,7 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
     func frameAvailable(_ frame: UIImage, _ heartRateProgress: Float, _ frameNumber: Int32) {
         videoView?.videoFrame = frame
         parent!.progressBarValue = CGFloat(heartRateProgress)
-        self.parent!.frameNumberLabel = NSString(format: "Frame: %d", frameNumber) as String
+        parent!.frameNumberLabel = NSString(format: "Frame: %d", frameNumber) as String
         
     }
     
@@ -42,8 +42,8 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
         if( videoProcessingPaused){
             let pauseBetweenSamples = Settings.getPauseBetweenSamples()
             if( pauseBetweenSamples ){
-                self.cameraRunning = CameraState.paused
-                self.parent?.startStopVideoButton = "Resume"
+                cameraRunning = CameraState.paused
+                parent!.startStopVideoButton = "Resume"
             }else{
                 openCVWrapper.resumeCamera();
             }
@@ -54,44 +54,44 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
                 let hrFrequencyICA = calculateHeartRateFromICA()
                 heartRateStr = NSString(format: "Heart Rate %.1f/%.1f", hrFrequency, hrFrequencyICA) as String
             }
-            self.parent?.heartRateLabel = heartRateStr
-            self.updateRawChart()
-            self.updateFilteredChart()
-            self.updateFFTChart()
-            self.updateFilteredICAChart()
-            self.updateFFTICAChart()
+            parent!.heartRateLabel = heartRateStr
+            updateRawChart()
+            updateFilteredChart()
+            updateFFTChart()
+            updateFilteredICAChart()
+            updateFFTICAChart()
         }
     }
     func updateRawChart(){
-        self.updateWaveform(lineChartView: parent!.lineChartsRaw, dataSeries: HeartRateSeries.rawData, "Raw RGB")
+        updateWaveform(lineChartView: parent!.lineChartsRaw, dataSeries: HeartRateSeries.rawData, "Raw RGB")
     }
     func updateFilteredChart(){
-        self.updateWaveform(lineChartView: parent!.lineChartsFiltered, dataSeries: HeartRateSeries.filteredData, "Filtered RGB")
+        updateWaveform(lineChartView: parent!.lineChartsFiltered, dataSeries: HeartRateSeries.filteredData, "Filtered RGB")
     }
     func updateFFTChart(){
-        self.updateFFT(barChartView: parent!.barChartsFFT, dataSeries: HeartRateSeries.fftData, "FFT of filtered data")
+        updateFFT(barChartView: parent!.barChartsFFT, dataSeries: HeartRateSeries.fftData, "FFT of filtered data")
     }
 
     func updateFilteredICAChart(){
-        self.updateWaveform(lineChartView: parent!.lineChartsFilteredICA, dataSeries: HeartRateSeries.filteredICAData, "Filtered (ICA) RGB")
+        updateWaveform(lineChartView: parent!.lineChartsFilteredICA, dataSeries: HeartRateSeries.filteredICAData, "Filtered (ICA) RGB")
     }
     func updateFFTICAChart(){
-        self.updateFFT(barChartView: parent!.barChartsFFTICA, dataSeries: HeartRateSeries.fftICAData, "FFT of ICA data")
+        updateFFT(barChartView: parent!.barChartsFFTICA, dataSeries: HeartRateSeries.fftICAData, "FFT of ICA data")
     }
     
     func startStopCamera(){
         if( cameraRunning == CameraState.stopped ){
             cameraRunning = CameraState.running;
             openCVWrapper.startCamera();
-            self.parent!.startStopVideoButton = "Stop"
+            parent!.startStopVideoButton = "Stop"
         }else if( cameraRunning == CameraState.running ){
             cameraRunning = CameraState.stopped;
             openCVWrapper.stopCamera();
-            self.parent!.startStopVideoButton = "Start"
+            parent!.startStopVideoButton = "Start"
         }else if( cameraRunning == CameraState.paused ){
             cameraRunning = CameraState.running;
             openCVWrapper.resumeCamera();
-            self.parent!.startStopVideoButton = "Stop"
+            parent!.startStopVideoButton = "Stop"
         }
 
     }

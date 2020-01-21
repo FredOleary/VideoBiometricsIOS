@@ -27,12 +27,11 @@ class UserSettings: ObservableObject {
         }
     }
     var filterEnd = String( format: "%.2f", Settings.getFilterEnd()){
-    didSet {
-//        print("filterStart \(filterEnd)")
-        Settings.setFilterEnd(Double(filterEnd)!)
-        objectWillChange.send()
+        didSet {
+            Settings.setFilterEnd(Double(filterEnd)!)
+            objectWillChange.send()
+        }
     }
-}
 
 
 }

@@ -14,6 +14,9 @@ class HeartRateCalculation{
     // Time Series
     var timeSeries: [Double]?
     
+    // Max RDB delta (empirical!!)
+    let maxDelta = 0.5
+    
     // Raw data as captured by the image processor
     var rawRedPixels: [Double]?
     var rawGreenPixels: [Double]?
@@ -23,6 +26,10 @@ class HeartRateCalculation{
     var normalizedRedAmplitude: [Double]?
     var normalizedGreenAmplitude: [Double]?
     var normalizedBlueAmplitude: [Double]?
+
+    var deltaRawRed: [Double]?
+    var deltaRawGreen: [Double]?
+    var deltaRawBlue: [Double]?
 
     // Filtered data
     var filteredRedAmplitude: [Double]?
@@ -80,7 +87,7 @@ class HeartRateCalculation{
         temporalFilter = TemporalFilter()
     }
     
-    func calculateHeartRate(){
+    func calculateHeartRate( _ actualFPS:Double){
         var ICARedMax:Double = 0
         var ICAGreenMax:Double = 0
         var ICABlueMax:Double = 0
@@ -99,11 +106,17 @@ class HeartRateCalculation{
                     }
                 }
             }
+            timeSeries = calcTimeSeries(count: rawRedPixels!.count, fps: actualFPS)
         }
-        normalizedRedAmplitude = normalizePixels( rawRedPixels! )
-        normalizedGreenAmplitude = normalizePixels( rawGreenPixels! )
-        normalizedBlueAmplitude = normalizePixels( rawBluePixels! )
+        deltaRawRed = deltaRawPixels( rawRedPixels! )
+        deltaRawGreen = deltaRawPixels( rawGreenPixels! )
+        deltaRawBlue = deltaRawPixels( rawBluePixels! )
         
+        normalizedRedAmplitude = normalizePixels( deltaRawRed! )
+        normalizedGreenAmplitude = normalizePixels( deltaRawGreen! )
+        normalizedBlueAmplitude = normalizePixels( deltaRawBlue! )
+        
+
         let filterStart = Settings.getFilterStart()
         let filterEnd = Settings.getFilterEnd()
         filteredRedAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: normalizedRedAmplitude!, sampleRate:fps, filterLoRate: filterStart, filterHiRate: filterEnd))!)
@@ -171,21 +184,42 @@ class HeartRateCalculation{
         }
         return false
     }
-    
+    func deltaRawPixels( _ pixels:[Double]) ->[Double] {
+        if(pixels.count > 0){
+            var delta:[Double] = [Double](repeating: 0.0, count: pixels.count)
+            for i in 1..<pixels.count {
+                var deltaVal = pixels[i] - pixels[i-1]
+                if( abs(deltaVal) > maxDelta ){
+                    deltaVal = deltaVal >= 0 ? maxDelta : -maxDelta
+                }
+                delta[i] = deltaVal
+            }
+            return delta
+        }
+        return pixels
+    }
     
     func normalizePixels( _ pixels:[Double] ) ->[Double]{
-        var xPixels = pixels
-        if(pixels.count > 256){
-            xPixels = pixels.suffix(256)
-
-        }
+//        var xPixels = pixels
+//        if(pixels.count > 256){
+//            xPixels = pixels.suffix(256)
+//
+//        }
         if(pixels.count > 0){
-            let min = xPixels.min()!
-            let range = xPixels.max()! - min
-            return xPixels.map {($0-min)/range}
+            let min = pixels.min()!
+            let range = pixels.max()! - min
+            return pixels.map {($0-min)/range}
         }else{
             return pixels
         }
+
+    }
+    func calcTimeSeries( count:Int, fps:Double) -> [Double]{
+        let seconds = Double(count)/fps
+        let timeSeries = (0..<count).map{
+            Double($0) * seconds/Double(count)
+        }
+        return timeSeries
 
     }
 

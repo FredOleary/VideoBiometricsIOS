@@ -112,7 +112,7 @@
     [greenPixelsIn removeAllObjects];
     [bluePixelsIn removeAllObjects];
     
-    [self.delegate framesReady:imageProcessor.videoProcessingPaused ];
+    [self.delegate framesReady:imageProcessor.videoProcessingPaused: fps ];
 }
     
 - (void)frameReady: (UIImage*) frame :(float) heartRateProgress: (int) frameNumber

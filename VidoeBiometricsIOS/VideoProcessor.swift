@@ -37,8 +37,9 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
         
     }
     
-    func framesReady(_ videoProcessingPaused: Bool) {
-        print("ViewController: framesReady videoProcessingPaused: ", videoProcessingPaused)
+    func framesReady(_ videoProcessingPaused: Bool, _ actualFPS:Double) {
+        let actualFPSStr = NSString(format: ". Actual FPS: %.1f", actualFPS) as String
+        print("ViewController: framesReady videoProcessingPaused: ", videoProcessingPaused, actualFPSStr)
         if( videoProcessingPaused){
             let pauseBetweenSamples = Settings.getPauseBetweenSamples()
             if( pauseBetweenSamples ){
@@ -47,7 +48,7 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
             }else{
                 openCVWrapper.resumeCamera();
             }
-            heartRateCalculation!.calculateHeartRate()
+            heartRateCalculation!.calculateHeartRate( actualFPS )
             var heartRateStr:String = "Heart Rate: N/A"
             let hrFrequency = calculateHeartRate()
             if( hrFrequency > 0){
@@ -135,8 +136,8 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
     
     private func addLine( _ lineChartData:LineChartData, _ yData:[Double], _ xData:[Double], color:[NSUIColor], _ name:String) {
         var lineChartEntry  = [ChartDataEntry]() //this is the Array that will eventually be displayed on the graph.
-        
-        for i in 0..<yData.count {
+        let count = xData.count < yData.count ? xData.count : yData.count
+        for i in 0..<count {
             let value = ChartDataEntry(x: xData[i], y: yData[i])
             lineChartEntry.append(value) // here we add it to the data set
         }
@@ -220,8 +221,10 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
 
         switch dataSeries {
         case .rawData:
-            return (heartRateCalculation!.normalizedRedAmplitude, heartRateCalculation!.normalizedGreenAmplitude, heartRateCalculation!.normalizedBlueAmplitude)
-        
+//            return (heartRateCalculation!.deltaRawRed, heartRateCalculation!.deltaRawGreen, heartRateCalculation!.deltaRawBlue)
+            return (heartRateCalculation!.rawRedPixels, heartRateCalculation!.rawGreenPixels, heartRateCalculation!.rawBluePixels)
+//            return (heartRateCalculation!.normalizedRedAmplitude, heartRateCalculation!.normalizedGreenAmplitude, heartRateCalculation!.normalizedBlueAmplitude)
+
         case .filteredData:
             return (heartRateCalculation!.filteredRedAmplitude, heartRateCalculation!.filteredGreenAmplitude, heartRateCalculation!.filteredBlueAmplitude)
 

@@ -81,9 +81,9 @@
     videoCamera = [[CvVideoCamera alloc] initWithParentView:dummyImageView];
     videoCamera.delegate = imageProcessor;
     videoCamera.defaultAVCaptureDevicePosition = AVCaptureDevicePositionFront;
-    videoCamera.defaultAVCaptureSessionPreset = AVCaptureSessionPreset352x288;
+    videoCamera.defaultAVCaptureSessionPreset = AVCaptureSessionPreset640x480;
     videoCamera.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
-    videoCamera.defaultFPS = 30;
+    videoCamera.defaultFPS = 60;
     return true;
 }
 

@@ -15,17 +15,18 @@ struct VideoView: View {
     @State var videoFrame: UIImage = UIImage(imageLiteralResourceName: "Heart-icon")
     
     init( bgColor:Color, videoDelegate:VideoProcessor ){
-        print("VideoView-init()")
         self.bgColor = bgColor
         self.videoProcessor = videoDelegate
     }
     var body: some View {
         VStack{
            Image(uiImage:videoFrame )
-            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+            .resizable()
+//            .aspectRatio(0.75, contentMode: .fill)
+//            .aspectRatio(1, contentMode: .fill)
             .onAppear(perform: fixupVideoFrame)
         }
-        
+//        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
     }
     private func fixupVideoFrame(){
         videoProcessor.videoView = self

@@ -68,6 +68,9 @@
                 faceTracker = cv::TrackerKCF::create();
                 faceTracker->init(grayImage,faceRect);
                 startTime = CACurrentMediaTime();
+                [redPixel removeAllObjects];
+                [greenPixel removeAllObjects];
+                [bluePixel removeAllObjects];
             }
         }
         UIImage* outImage = [[self class] UIImageFromCVMat:image];
@@ -89,9 +92,6 @@
 
 - (id)initWithOpenCVView:(int)framesPerHRReading
                         :(id<OpenCVImageProcessorDelegate>)del{
-//    opencvView = openCVView;
-//    heartrateLabel = heartRateLabel;
-//    heartrateProgress = heartRateProgress;
     self.videoProcessingPaused = false;
     frameCount = 0;
     totalFrameCount = 0;

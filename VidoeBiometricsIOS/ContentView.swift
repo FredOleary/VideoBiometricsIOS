@@ -60,48 +60,6 @@ struct ContentView: View {
                     Spacer()
                     tbButton(parent:self, imageAsset:"settings", toState:MainView.settings,  selected:testSelected(state:mainView, checkState:MainView.settings), leading:0, trailing:10)
                 }
-//                    Button(action: {
-//                        self.mainView = MainView.rawData
-//                    }) {
-//                        ButtonImage(imageAsset:"Raw-waveform")
-//                    }
-//                    .buttonStyle(ToolbarButtonStyle( state:mainView == MainView.rawData))
-                    
-//                    Spacer()
-//                    Button(action: {
-//                        self.mainView = MainView.filteredData
-//                    }) {
-//                        ButtonImage(imageAsset:"Filtered-waveform")
-//                    }
-//                    .buttonStyle(ToolbarButtonStyle( state:mainView == MainView.filteredData))
-                    
-//                    Spacer()
-//                    Button(action: {
-//                        self.mainView = MainView.FFTData
-//                    }) {
-//                         ButtonImage(imageAsset:"FFT-waveform")
-//                    }
-//                    .buttonStyle(ToolbarButtonStyle( state:mainView == MainView.FFTData))
-//                }
-//                Group{
-//                    Spacer()
-//                    Button(action: {
-//                        self.mainView = MainView.filteredICAData
-//                    }) {
-//                        ButtonImage(imageAsset:"Filtered-ICA-waveform")
-//                    }
-//                    .buttonStyle(ToolbarButtonStyle( state:mainView == MainView.filteredICAData))
-//
-//                    Spacer()
-//                    Button(action: {
-//                        self.mainView = MainView.settings
-//                    }) {
-//                        ButtonImage(imageAsset:"settings")
-//                    }
-//                    .padding(.trailing, 10)
-//                    .buttonStyle(ToolbarButtonStyle( state:mainView == MainView.settings))
-//                }
-
             }
             HStack{
                 Text(frameNumberLabel).padding(.leading)
@@ -120,6 +78,7 @@ struct ContentView: View {
             }
             .background(Color.blue)
             .foregroundColor(.white)
+//            .padding(.top, -16)
 
             Group{
                 if mainView == MainView.video {

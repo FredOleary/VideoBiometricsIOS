@@ -15,7 +15,7 @@ class HeartRateCalculation{
     var timeSeries: [Double]?
     
     // Max RDB delta (empirical!!)
-    let maxDelta = 0.5
+    let maxDelta = 100.0
     
     // Raw data as captured by the image processor
     var rawRedPixels: [Double]?
@@ -112,10 +112,14 @@ class HeartRateCalculation{
         deltaRawGreen = deltaRawPixels( rawGreenPixels! )
         deltaRawBlue = deltaRawPixels( rawBluePixels! )
         
-        normalizedRedAmplitude = normalizePixels( deltaRawRed! )
-        normalizedGreenAmplitude = normalizePixels( deltaRawGreen! )
-        normalizedBlueAmplitude = normalizePixels( deltaRawBlue! )
-        
+        normalizedRedAmplitude = normalizePixels( rawRedPixels! )
+        normalizedGreenAmplitude = normalizePixels( rawGreenPixels! )
+        normalizedBlueAmplitude = normalizePixels( rawBluePixels! )
+
+//        normalizedRedAmplitude = normalizePixels( deltaRawRed! )
+//        normalizedGreenAmplitude = normalizePixels( deltaRawGreen! )
+//        normalizedBlueAmplitude = normalizePixels( deltaRawBlue! )
+
 
         let filterStart = Settings.getFilterStart()
         let filterEnd = Settings.getFilterEnd()

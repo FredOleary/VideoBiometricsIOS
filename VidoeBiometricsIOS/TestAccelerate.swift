@@ -301,14 +301,14 @@ class TestAccelerate{
         return timeSeries
 
     }
-    static func makeSineWave( _ frequency:Double) -> [Double]{
-        let n = 300 // Should be power of two for the FFT ??
+    static func makeSineWave( _ frequency:Double, fps:Int, noOfSamples:Int) -> [Double]{
+//        let n = 300 // Should be power of two for the FFT ??
         let amplitude = 1.0
-        let seconds = 10.0
-        let fps = Double(n)/seconds
+//        let seconds = 10.0
+//        let fps = Double(n)/seconds
 
-        let sineWave = (0..<n).map {
-            amplitude * sin(2.0 * .pi / fps * Double($0) * frequency)
+        let sineWave = (0..<noOfSamples).map {
+            amplitude * sin(2.0 * .pi / Double(fps) * Double($0) * frequency)
         }
         return sineWave
     }

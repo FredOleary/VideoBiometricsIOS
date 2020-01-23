@@ -90,7 +90,7 @@ class TemporalFilter {
     func getFilterResponse( fps:Double, filterStart:Double, filterEnd:Double,  startFrequency:Double, endFrequency:Double ) ->([Double], [Double]){
         func getFilterResponseFreq( _ fps:Double, _ filterStart:Double, _ filterEnd:Double,  _ frequency:Double ) -> Double{
         //        let testAccelerate = TestAccelerate()
-            let input = TestAccelerate.makeSineWave( frequency )
+            let input = TestAccelerate.makeSineWave( frequency, fps:30, noOfSamples:300 )
             let output = bandpassFilter(dataIn: input, sampleRate: fps, filterLoRate: filterStart, filterHiRate: filterEnd)
             
             let outputFloats:[Float] = (0..<output.count).map {

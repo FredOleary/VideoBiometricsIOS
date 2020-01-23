@@ -25,6 +25,7 @@
     NSMutableArray* bluePixels;
     double actualFps;
     int framesPerHRSample;
+    int cameraFrameRate;
 }
 
 - (id) init {
@@ -67,12 +68,13 @@
         return outImage;
     }
 }
-- (BOOL)initializeCamera :(int)framesPerHeartRateSample{
-
+- (BOOL)initializeCamera :(int)framesPerHeartRateSample :(int)frameRate{
+    NSLog(@"OpenCVWrapper:initializeCamera Frame Rate: %d, Frames per Heart rate sample %d", frameRate, framesPerHeartRateSample);
     UIImageView *dummyImageView = [UIImageView alloc];
 //    UIImageView *dummyImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Trend"]];
     
     framesPerHRSample = framesPerHeartRateSample;
+    cameraFrameRate = frameRate;
     imageProcessor = [[OpenCVImageProcessor alloc] initWithOpenCVView
 //                      :imageOpenCV:heartRateLabel
 //                      :heartRateProgress
@@ -83,12 +85,14 @@
     videoCamera.defaultAVCaptureDevicePosition = AVCaptureDevicePositionFront;
     videoCamera.defaultAVCaptureSessionPreset = AVCaptureSessionPreset640x480;
     videoCamera.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
-    videoCamera.defaultFPS = 60;
+    videoCamera.defaultFPS = cameraFrameRate;
     return true;
 }
 
-- (void) startCamera{
+- (void) startCamera :(int)frameRate{
     NSLog(@"Video Started---");
+    cameraFrameRate = frameRate;
+    videoCamera.defaultFPS = cameraFrameRate;
     [videoCamera start];
 }
 - (void) stopCamera{
@@ -115,7 +119,7 @@
     [self.delegate framesReady:imageProcessor.videoProcessingPaused: fps ];
 }
     
-- (void)frameReady: (UIImage*) frame :(float) heartRateProgress: (int) frameNumber
+- (void)frameReady:(UIImage*) frame :(float) heartRateProgress :(int) frameNumber
 {
 //    NSLog(@"OpenCVWrapper:frameReady");
     [self.delegate frameAvailable:frame :heartRateProgress :frameNumber];

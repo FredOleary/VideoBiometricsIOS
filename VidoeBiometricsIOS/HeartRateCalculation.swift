@@ -77,7 +77,7 @@ class HeartRateCalculation{
     
     let testAccelerate = TestAccelerate()
     let fft = FFT()
-    let fps = 30.0  // This may need to use calculation!!
+
     let useConstRGBData = false;
     
     var temporalFilter:TemporalFilter?
@@ -123,26 +123,26 @@ class HeartRateCalculation{
 
         let filterStart = Settings.getFilterStart()
         let filterEnd = Settings.getFilterEnd()
-        filteredRedAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: normalizedRedAmplitude!, sampleRate:fps, filterLoRate: filterStart, filterHiRate: filterEnd))!)
-        filteredGreenAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: normalizedGreenAmplitude!, sampleRate:fps, filterLoRate: filterStart, filterHiRate: filterEnd))!)
-        filteredBlueAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: normalizedBlueAmplitude!, sampleRate:fps, filterLoRate: filterStart, filterHiRate: filterEnd))!)
+        filteredRedAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: normalizedRedAmplitude!, sampleRate:actualFPS, filterLoRate: filterStart, filterHiRate: filterEnd))!)
+        filteredGreenAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: normalizedGreenAmplitude!, sampleRate:actualFPS, filterLoRate: filterStart, filterHiRate: filterEnd))!)
+        filteredBlueAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: normalizedBlueAmplitude!, sampleRate:actualFPS, filterLoRate: filterStart, filterHiRate: filterEnd))!)
         
-        (FFTRedAmplitude, FFTRedFrequency, heartRateRedFrequency, _) = fft.calculate( filteredRedAmplitude!, fps: fps)
-        (FFTGreenAmplitude, FFTGreenFrequency, heartRateGreenFrequency, _) = fft.calculate( filteredGreenAmplitude!, fps: fps)
-        (FFTBlueAmplitude, FFTBlueFrequency, heartRateBlueFrequency, _) = fft.calculate( filteredBlueAmplitude!, fps: fps)
+        (FFTRedAmplitude, FFTRedFrequency, heartRateRedFrequency, _) = fft.calculate( filteredRedAmplitude!, fps: actualFPS)
+        (FFTGreenAmplitude, FFTGreenFrequency, heartRateGreenFrequency, _) = fft.calculate( filteredGreenAmplitude!, fps: actualFPS)
+        (FFTBlueAmplitude, FFTBlueFrequency, heartRateBlueFrequency, _) = fft.calculate( filteredBlueAmplitude!, fps: actualFPS)
         heartRateFrequency = heartRateGreenFrequency // May need fixup
         
         if( calculateICA()){
             ICARedAmplitude = normalizePixels( ICARedAmplitude! )
             ICAGreenAmplitude = normalizePixels( ICAGreenAmplitude! )
             ICABlueAmplitude = normalizePixels( ICABlueAmplitude! )
-            ICARedAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: ICARedAmplitude!, sampleRate:fps, filterLoRate: filterStart, filterHiRate: filterEnd))!)
-            ICAGreenAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: ICAGreenAmplitude!, sampleRate:fps, filterLoRate: filterStart, filterHiRate: filterEnd))!)
-            ICABlueAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: ICABlueAmplitude!, sampleRate:fps, filterLoRate: filterStart, filterHiRate: filterEnd))!)
+            ICARedAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: ICARedAmplitude!, sampleRate:actualFPS, filterLoRate: filterStart, filterHiRate: filterEnd))!)
+            ICAGreenAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: ICAGreenAmplitude!, sampleRate:actualFPS, filterLoRate: filterStart, filterHiRate: filterEnd))!)
+            ICABlueAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: ICABlueAmplitude!, sampleRate:actualFPS, filterLoRate: filterStart, filterHiRate: filterEnd))!)
 
-            (ICAFFTRedAmplitude, ICAFFTRedFrequency, ICAheartRateRedFrequency, ICARedMax) = fft.calculate( ICARedAmplitude!, fps: fps)
-            (ICAFFTGreenAmplitude, ICAFFTGreenFrequency, ICAheartRateGreenFrequency, ICAGreenMax) = fft.calculate( ICAGreenAmplitude!, fps: fps)
-            (ICAFFTBlueAmplitude, ICAFFTBlueFrequency, ICAheartRateBlueFrequency, ICABlueMax) = fft.calculate( ICABlueAmplitude!, fps: fps)
+            (ICAFFTRedAmplitude, ICAFFTRedFrequency, ICAheartRateRedFrequency, ICARedMax) = fft.calculate( ICARedAmplitude!, fps: actualFPS)
+            (ICAFFTGreenAmplitude, ICAFFTGreenFrequency, ICAheartRateGreenFrequency, ICAGreenMax) = fft.calculate( ICAGreenAmplitude!, fps: actualFPS)
+            (ICAFFTBlueAmplitude, ICAFFTBlueFrequency, ICAheartRateBlueFrequency, ICABlueMax) = fft.calculate( ICABlueAmplitude!, fps: actualFPS)
             // Take the maximim of the max RGB amplitudes
             heartRateFrequencyICA = ICAheartRateRedFrequency
             if( ICAGreenMax > ICARedMax){
@@ -203,21 +203,43 @@ class HeartRateCalculation{
         return pixels
     }
     
-    func normalizePixels( _ pixels:[Double] ) ->[Double]{
-//        var xPixels = pixels
-//        if(pixels.count > 256){
-//            xPixels = pixels.suffix(256)
-//
+//    func normalizePixels( _ pixels:[Double] ) ->[Double]{
+////        var xPixels = pixels
+////        if(pixels.count > 256){
+////            xPixels = pixels.suffix(256)
+////
+////        }
+//        if(pixels.count > 0){
+//            let min = pixels.min()!
+//            let range = pixels.max()! - min
+//            return pixels.map {($0-min)/range}
+//        }else{
+//            return pixels
 //        }
+//    }
+//
+    func normalizePixels( _ pixels:[Double] ) ->[Double]{
+        var xPixels = pixels
+
         if(pixels.count > 0){
-            let min = pixels.min()!
-            let range = pixels.max()! - min
-            return pixels.map {($0-min)/range}
+            xPixels = pixels.suffix( getPowerOf2Count(count: pixels.count))
+            let min = xPixels.min()!
+            let range = xPixels.max()! - min
+            return xPixels.map {($0-min)/range}
         }else{
             return pixels
         }
 
     }
+    func getPowerOf2Count( count:Int) -> Int {
+        if( count >= 1024 ) { return 1024 }
+        if( count >= 512 ) { return 512 }
+        if( count >= 256 ) { return 256 }
+        if( count >= 128 ) { return 128 }
+        if( count >= 64 ) { return 64 }
+        return count
+    }
+    
     func calcTimeSeries( count:Int, fps:Double) -> [Double]{
         let seconds = Double(count)/fps
         let timeSeries = (0..<count).map{

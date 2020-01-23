@@ -64,9 +64,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSString *)openCVVersionString;
 - (UIImage *)loadImage: (NSString *)imageName;
-- (BOOL)initializeCamera: (int)framesPerHeartRateSample;
+- (BOOL)initializeCamera:(int)framesPerHeartRateSample
+                        :(int)frameRate;
 
-- (void) startCamera;
+- (void) startCamera :(int)frameRate;
 - (void) stopCamera;
 - (void) resumeCamera;
 

@@ -20,32 +20,49 @@ struct SettingsView : View {
     let endFrequency:Double = 600/60
 
     var body: some View {
-        
-        VStack {
-            Toggle(isOn: parent.$userSettings.pauseBetweenSamples) {
-               Text("Pause between samples")
-            }
-            .padding(EdgeInsets(top:0, leading: 10, bottom:0, trailing: 10 ))
-            Spacer()
-            HStack{
-                Text("Bandpass filter frequencies (Hz)")
+            VStack {
+                Toggle(isOn: parent.$userSettings.pauseBetweenSamples) {
+                   Text("Pause between samples")
+                }
+                .padding(EdgeInsets(top:0, leading: 10, bottom:0, trailing: 10 ))
+                
+                Picker(selection: parent.$userSettings.frameRate, label: Text("Frame Rate")) {
+                    Text("30 FPS").tag(30)
+                    Text("60 FPS").tag(60)
+                }.pickerStyle(SegmentedPickerStyle())
+                Spacer()
+
+                HStack {
+                    Text("Frames per Heart rate sample: ")
                     .padding( .leading, 10 )
+                    Spacer()
+                    TextField("Frames/Sample", text: parent.$userSettings.framesPerHeartRateSample)
+                        .keyboardType(.decimalPad)
+                    .multilineTextAlignment(.trailing)
+                    .padding( .trailing, 10 )
+                    .frame(minWidth: 80, maxWidth: 80) // Fragile!!!
+                }
                 Spacer()
+                HStack{
+                    Text("Bandpass filter frequencies (Hz)")
+                    .padding( .leading, 10 )
+                    Spacer()
+                }
+                HStack {
+                    Text("From: ")
+                    TextField("Low Frequency", text: parent.$userSettings.filterStart)
+                        .keyboardType(.decimalPad)
+                    Spacer()
+                    Text("To: ")
+                    TextField("High Frequency", text: parent.$userSettings.filterEnd)
+                        .keyboardType(.decimalPad)
+                }
+                .padding(EdgeInsets(top:0, leading: 10, bottom:0, trailing: 10 ))
+                SettingsChartView( parent:self.frequencyChartHolder)
+                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 300)
+                        .onAppear(perform: updateChart)
             }
-            HStack {
-                Text("From: ")
-                TextField("Low Frequency", text: parent.$userSettings.filterStart)
-                    .keyboardType(.decimalPad)
-                Spacer()
-                Text("To: ")
-                TextField("High Frequency", text: parent.$userSettings.filterEnd)
-                    .keyboardType(.decimalPad)
-            }
-            .padding(EdgeInsets(top:0, leading: 10, bottom:0, trailing: 10 ))
-            SettingsChartView( parent:self.frequencyChartHolder)
-                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 300)
-                    .onAppear(perform: updateChart)
-        }
+
     }
     private func updateChart(){
         let temporalFilter: TemporalFilter = TemporalFilter()

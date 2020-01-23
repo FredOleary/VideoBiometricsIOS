@@ -12,6 +12,7 @@ class Settings {
     
     static var filterStart:Double  = 42/60.0
     static var filterEnd:Double  = 150/60
+    static var frameRate = 30
 
     
     struct settingsKeys {
@@ -19,6 +20,7 @@ class Settings {
         static let framesPerHeartRateSample = "framesPerHeartRateSample"
         static let filterStart = "filterStart"
         static let filterEnd = "filterEnd"
+        static let frameRate = "frameRate"
         
     }
 
@@ -68,7 +70,19 @@ class Settings {
         let defaults = UserDefaults.standard
         defaults.set(pause, forKey: settingsKeys.pauseBetweenSamples )
     }
-    
+
+    static func getFrameRate() -> Int {
+        let defaults = UserDefaults.standard
+        if self.checkIfKeyExists(settingsKeys.frameRate){
+            return defaults.integer(forKey: settingsKeys.frameRate)
+        }
+        return frameRate
+    }
+    static func setFrameRate( _ frameRate:Int) {
+        let defaults = UserDefaults.standard
+        defaults.set(frameRate, forKey: settingsKeys.frameRate )
+    }
+
     static private func checkIfKeyExists( _ key:String) -> Bool {
         if (UserDefaults.standard.object(forKey:key) != nil ){
             return true

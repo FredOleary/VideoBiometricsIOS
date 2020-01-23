@@ -21,17 +21,36 @@ class UserSettings: ObservableObject {
     }
     var filterStart = String( format: "%.2f", Settings.getFilterStart()){
         didSet {
-//            print("filterStart \(filterStart)")
-            Settings.setFilterStart(Double(filterStart)!)
+            guard let value = Double(filterStart) else {
+                return
+            }
+            Settings.setFilterStart(value)
             objectWillChange.send()
         }
     }
     var filterEnd = String( format: "%.2f", Settings.getFilterEnd()){
         didSet {
-            Settings.setFilterEnd(Double(filterEnd)!)
+            guard let value = Double(filterEnd) else {
+                return
+            }
+            Settings.setFilterEnd(value)
             objectWillChange.send()
         }
     }
-
+    var frameRate = Settings.getFrameRate(){
+        didSet{
+            Settings.setFrameRate(frameRate)
+            objectWillChange.send()
+        }
+    }
+    var framesPerHeartRateSample = String( format: "%d", Settings.getFramesPerHeartRateSample()){
+        didSet {
+            guard let value = Int(framesPerHeartRateSample) else {
+                return
+            }
+            Settings.setFramesPerHeartRateSample(value)
+            objectWillChange.send()
+        }
+    }
 
 }

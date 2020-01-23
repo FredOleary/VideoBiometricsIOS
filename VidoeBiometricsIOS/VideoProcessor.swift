@@ -83,7 +83,7 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
     func startStopCamera(){
         if( cameraRunning == CameraState.stopped ){
             cameraRunning = CameraState.running;
-            openCVWrapper.startCamera();
+            openCVWrapper.startCamera(Int32(Settings.getFrameRate()));
             parent!.startStopVideoButton = "Stop"
         }else if( cameraRunning == CameraState.running ){
             cameraRunning = CameraState.stopped;
@@ -100,7 +100,7 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
         openCVWrapper.delegate = self
         heartRateCalculation = HeartRateCalculation( openCVWrapper )
         self.parent = parent
-        openCVWrapper.initializeCamera(300)
+        openCVWrapper.initializeCamera(Int32(Settings.getFramesPerHeartRateSample()), Int32(Settings.getFrameRate()))
     }
 
     private func calculateHeartRate() -> Double{

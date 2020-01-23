@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/fredoleary/xcodeprojects/VidoeBiometricsIOS/VidoeBiometricsIOS/LineCharts.swift">
-   </FileRef>
-   <FileRef
       location = "group:VidoeBiometricsIOS.xcodeproj">
    </FileRef>
    <FileRef

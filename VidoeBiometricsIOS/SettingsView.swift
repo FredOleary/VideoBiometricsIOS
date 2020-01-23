@@ -25,13 +25,14 @@ struct SettingsView : View {
                    Text("Pause between samples")
                 }
                 .padding(EdgeInsets(top:0, leading: 10, bottom:0, trailing: 10 ))
-                
-                Picker(selection: parent.$userSettings.frameRate, label: Text("Frame Rate")) {
-                    Text("30 FPS").tag(30)
-                    Text("60 FPS").tag(60)
-                }.pickerStyle(SegmentedPickerStyle())
-                Spacer()
-
+                HStack{
+                    Text("Frames Rate: ")
+                    .padding( .leading, 10 )
+                    Picker(selection: parent.$userSettings.frameRate, label: Text("Frame Rate")) {
+                        Text("30 FPS").tag(30)
+                        Text("60 FPS").tag(60)
+                    }.pickerStyle(SegmentedPickerStyle())
+                }
                 HStack {
                     Text("Frames per Heart rate sample: ")
                     .padding( .leading, 10 )

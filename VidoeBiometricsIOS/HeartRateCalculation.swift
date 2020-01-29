@@ -14,8 +14,10 @@ class HeartRateCalculation{
     // Time Series
     var timeSeries: [Double]?
     
-    // Max RDB delta (empirical!!)
+    // Max RGB delta (empirical!!)
     let maxDelta = 100.0
+    
+    let minNoOfPeaks = 3
     
     // Raw data as captured by the image processor
     var rawRedPixels: [Double]?
@@ -35,6 +37,14 @@ class HeartRateCalculation{
     var filteredRedAmplitude: [Double]?
     var filteredGreenAmplitude: [Double]?
     var filteredBlueAmplitude: [Double]?
+
+    var maxRedPeaks: [(Double, Double)]?
+    var maxGreenPeaks: [(Double, Double)]?
+    var maxBluePeaks: [(Double, Double)]?
+
+    var ICAmaxRedPeaks: [(Double, Double)]?
+    var ICAmaxGreenPeaks: [(Double, Double)]?
+    var ICAmaxBluePeaks: [(Double, Double)]?
 
     // FFT data
     var FFTRedAmplitude: [Double]?
@@ -71,6 +81,17 @@ class HeartRateCalculation{
     var ICAheartRateGreenFrequency: Double?
     var ICAheartRateBlueFrequency: Double?
 
+    // HeartRate data from peak detect (value, standard deviation)
+    var heartRatePeakRed:(Double, Double)?
+    var heartRatePeakGreen:(Double, Double)?
+    var heartRatePeakBlue:(Double, Double)?
+    
+    // ICA HeartRate data from peak detect (value, standard deviation)
+    var ICAheartRatePeakRed:(Double, Double)?
+    var ICAheartRatePeakGreen:(Double, Double)?
+    var ICAheartRatePeakBlue:(Double, Double)?
+
+
     // 'Calculated' HR
     var heartRateFrequency: Double?
     var heartRateFrequencyICA: Double?
@@ -78,7 +99,8 @@ class HeartRateCalculation{
     let testAccelerate = TestAccelerate()
     let fft = FFT()
 
-    let useConstRGBData = false;
+    // For testing predefined/mock data!!! Must be 0 for real heart rate
+    let useConstRGBData = 0;
     
     var temporalFilter:TemporalFilter?
     
@@ -91,11 +113,21 @@ class HeartRateCalculation{
         var ICARedMax:Double = 0
         var ICAGreenMax:Double = 0
         var ICABlueMax:Double = 0
+        var frameRate = actualFPS
 
         timeSeries = testAccelerate.makeTimeSeries()
-        if( useConstRGBData ){
+        if( useConstRGBData == 1){
+            // NOTE: This requires 300 samples at 30FPS....
             let rgbSampleData = RGBSampleData()
+            frameRate = Double(Settings.getFrameRate())
             (rawRedPixels, rawGreenPixels, rawBluePixels) = rgbSampleData.getRGBData()
+        }else if( useConstRGBData == 2){
+            let fps = Settings.getFrameRate()
+            let count = Settings.getFramesPerHeartRateSample()
+            rawRedPixels = TestAccelerate.makeSineWave(0.8, fps: fps, noOfSamples: count)
+            rawGreenPixels = TestAccelerate.makeSineWave(1.0166666, fps: fps, noOfSamples: count)
+            rawBluePixels = TestAccelerate.makeSineWave( 1.2, fps: fps, noOfSamples: count)
+            frameRate = Double(fps)
         }else{
             if let rawRed = openCVWrapper.getRedPixels() as NSArray as? [Double]{
                 if let rawGreen = openCVWrapper.getGreenPixels() as NSArray as? [Double]{
@@ -106,11 +138,11 @@ class HeartRateCalculation{
                     }
                 }
             }
-            timeSeries = calcTimeSeries(count: rawRedPixels!.count, fps: actualFPS)
+            timeSeries = calcTimeSeries(count: rawRedPixels!.count, fps: frameRate)
         }
-        deltaRawRed = deltaRawPixels( rawRedPixels! )
-        deltaRawGreen = deltaRawPixels( rawGreenPixels! )
-        deltaRawBlue = deltaRawPixels( rawBluePixels! )
+//        deltaRawRed = deltaRawPixels( rawRedPixels! )
+//        deltaRawGreen = deltaRawPixels( rawGreenPixels! )
+//        deltaRawBlue = deltaRawPixels( rawBluePixels! )
         
         normalizedRedAmplitude = normalizePixels( rawRedPixels! )
         normalizedGreenAmplitude = normalizePixels( rawGreenPixels! )
@@ -123,26 +155,41 @@ class HeartRateCalculation{
 
         let filterStart = Settings.getFilterStart()
         let filterEnd = Settings.getFilterEnd()
-        filteredRedAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: normalizedRedAmplitude!, sampleRate:actualFPS, filterLoRate: filterStart, filterHiRate: filterEnd))!)
-        filteredGreenAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: normalizedGreenAmplitude!, sampleRate:actualFPS, filterLoRate: filterStart, filterHiRate: filterEnd))!)
-        filteredBlueAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: normalizedBlueAmplitude!, sampleRate:actualFPS, filterLoRate: filterStart, filterHiRate: filterEnd))!)
+        filteredRedAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: normalizedRedAmplitude!, sampleRate:frameRate, filterLoRate: filterStart, filterHiRate: filterEnd))!)
+        filteredGreenAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: normalizedGreenAmplitude!, sampleRate:frameRate, filterLoRate: filterStart, filterHiRate: filterEnd))!)
+        filteredBlueAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: normalizedBlueAmplitude!, sampleRate:frameRate, filterLoRate: filterStart, filterHiRate: filterEnd))!)
         
-        (FFTRedAmplitude, FFTRedFrequency, heartRateRedFrequency, _) = fft.calculate( filteredRedAmplitude!, fps: actualFPS)
-        (FFTGreenAmplitude, FFTGreenFrequency, heartRateGreenFrequency, _) = fft.calculate( filteredGreenAmplitude!, fps: actualFPS)
-        (FFTBlueAmplitude, FFTBlueFrequency, heartRateBlueFrequency, _) = fft.calculate( filteredBlueAmplitude!, fps: actualFPS)
+        assert(filteredRedAmplitude!.count == timeSeries!.count)
+        assert(filteredGreenAmplitude!.count == timeSeries!.count)
+        assert(filteredBlueAmplitude!.count == timeSeries!.count)
+        
+        // TODO Make lookahead/delta be dynamic...
+        let delta = 0.1
+        (maxRedPeaks, _) = PeakDetect.peakDetect(yAxis: filteredRedAmplitude!, xAxis: timeSeries!, lookAhead: 10, delta: delta)
+        (maxGreenPeaks, _) = PeakDetect.peakDetect(yAxis: filteredGreenAmplitude!, xAxis: timeSeries!, lookAhead: 10, delta: delta)
+        (maxBluePeaks, _) = PeakDetect.peakDetect(yAxis: filteredBlueAmplitude!, xAxis: timeSeries!, lookAhead: 10, delta: delta)
+        
+        heartRatePeakRed = calculateHeartRateFromPeaks(maxRedPeaks!, filterStart, filterEnd )
+        heartRatePeakGreen = calculateHeartRateFromPeaks(maxGreenPeaks!, filterStart, filterEnd )
+        heartRatePeakBlue = calculateHeartRateFromPeaks(maxBluePeaks!, filterStart, filterEnd )
+//        heartRateFrequency = hrGreen
+
+        (FFTRedAmplitude, FFTRedFrequency, heartRateRedFrequency, _) = fft.calculate( filteredRedAmplitude!, fps: frameRate)
+        (FFTGreenAmplitude, FFTGreenFrequency, heartRateGreenFrequency, _) = fft.calculate( filteredGreenAmplitude!, fps: frameRate)
+        (FFTBlueAmplitude, FFTBlueFrequency, heartRateBlueFrequency, _) = fft.calculate( filteredBlueAmplitude!, fps: frameRate)
         heartRateFrequency = heartRateGreenFrequency // May need fixup
         
         if( calculateICA()){
             ICARedAmplitude = normalizePixels( ICARedAmplitude! )
             ICAGreenAmplitude = normalizePixels( ICAGreenAmplitude! )
             ICABlueAmplitude = normalizePixels( ICABlueAmplitude! )
-            ICARedAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: ICARedAmplitude!, sampleRate:actualFPS, filterLoRate: filterStart, filterHiRate: filterEnd))!)
-            ICAGreenAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: ICAGreenAmplitude!, sampleRate:actualFPS, filterLoRate: filterStart, filterHiRate: filterEnd))!)
-            ICABlueAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: ICABlueAmplitude!, sampleRate:actualFPS, filterLoRate: filterStart, filterHiRate: filterEnd))!)
+            ICARedAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: ICARedAmplitude!, sampleRate:frameRate, filterLoRate: filterStart, filterHiRate: filterEnd))!)
+            ICAGreenAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: ICAGreenAmplitude!, sampleRate:frameRate, filterLoRate: filterStart, filterHiRate: filterEnd))!)
+            ICABlueAmplitude = normalizePixels((temporalFilter?.bandpassFilter(dataIn: ICABlueAmplitude!, sampleRate:frameRate, filterLoRate: filterStart, filterHiRate: filterEnd))!)
 
-            (ICAFFTRedAmplitude, ICAFFTRedFrequency, ICAheartRateRedFrequency, ICARedMax) = fft.calculate( ICARedAmplitude!, fps: actualFPS)
-            (ICAFFTGreenAmplitude, ICAFFTGreenFrequency, ICAheartRateGreenFrequency, ICAGreenMax) = fft.calculate( ICAGreenAmplitude!, fps: actualFPS)
-            (ICAFFTBlueAmplitude, ICAFFTBlueFrequency, ICAheartRateBlueFrequency, ICABlueMax) = fft.calculate( ICABlueAmplitude!, fps: actualFPS)
+            (ICAFFTRedAmplitude, ICAFFTRedFrequency, ICAheartRateRedFrequency, ICARedMax) = fft.calculate( ICARedAmplitude!, fps: frameRate)
+            (ICAFFTGreenAmplitude, ICAFFTGreenFrequency, ICAheartRateGreenFrequency, ICAGreenMax) = fft.calculate( ICAGreenAmplitude!, fps: frameRate)
+            (ICAFFTBlueAmplitude, ICAFFTBlueFrequency, ICAheartRateBlueFrequency, ICABlueMax) = fft.calculate( ICABlueAmplitude!, fps: frameRate)
             // Take the maximim of the max RGB amplitudes
             heartRateFrequencyICA = ICAheartRateRedFrequency
             if( ICAGreenMax > ICARedMax){
@@ -153,6 +200,15 @@ class HeartRateCalculation{
             }else if( ICABlueMax > ICARedMax){
                 heartRateFrequencyICA = ICAheartRateBlueFrequency
             }
+            let ICADelta = 0.1
+            (ICAmaxRedPeaks, _) = PeakDetect.peakDetect(yAxis: ICARedAmplitude!, xAxis: timeSeries!, lookAhead: 10, delta: ICADelta)
+            (ICAmaxGreenPeaks, _) = PeakDetect.peakDetect(yAxis: ICAGreenAmplitude!, xAxis: timeSeries!, lookAhead: 10, delta: ICADelta)
+            (ICAmaxBluePeaks, _) = PeakDetect.peakDetect(yAxis: ICABlueAmplitude!, xAxis: timeSeries!, lookAhead: 10, delta: ICADelta)
+            
+            ICAheartRatePeakRed = calculateHeartRateFromPeaks(ICAmaxRedPeaks!, filterStart, filterEnd )
+            ICAheartRatePeakGreen = calculateHeartRateFromPeaks(ICAmaxGreenPeaks!, filterStart, filterEnd )
+            ICAheartRatePeakBlue = calculateHeartRateFromPeaks(ICAmaxBluePeaks!, filterStart, filterEnd )
+
 
         }
     }
@@ -187,6 +243,34 @@ class HeartRateCalculation{
             
         }
         return false
+    }
+    func calculateHeartRateFromPeaks( _ peaks:[(Double, Double)], _ filterLow:Double, _ filterHigh:Double ) -> (Double, Double){
+        var heartRateData = (0.0,0.0)
+        var count = 0
+        var heartRate = 0.0
+        var peakList = [Double]()
+        if( peaks.count > 1 ){
+            for n in 1...peaks.count-1 {
+                let ( _ , freq1 ) = peaks[n-1]
+                let ( _ , freq2 ) = peaks[n]
+                let freq = 1/(freq2 - freq1)
+                if( freq >= filterLow && freq <= filterHigh){
+                    peakList.append(freq)
+                    heartRate += freq
+                    count += 1
+                }
+            }
+            if count > minNoOfPeaks {
+                heartRate /= Double(count) // Average heart rate
+                var variance = 0.0
+                for n in 0...peakList.count-1{
+                    variance += pow((heartRate - peakList[n]), 2)
+                }
+                let stdDeviation = sqrt(variance/Double((count-1)))
+                heartRateData = (heartRate, stdDeviation)
+            }
+        }
+        return heartRateData
     }
     func deltaRawPixels( _ pixels:[Double]) ->[Double] {
         if(pixels.count > 0){
@@ -232,11 +316,11 @@ class HeartRateCalculation{
 
     }
     func getPowerOf2Count( count:Int) -> Int {
-        if( count >= 1024 ) { return 1024 }
-        if( count >= 512 ) { return 512 }
-        if( count >= 256 ) { return 256 }
-        if( count >= 128 ) { return 128 }
-        if( count >= 64 ) { return 64 }
+//        if( count >= 1024 ) { return 1024 }
+//        if( count >= 512 ) { return 512 }
+//        if( count >= 256 ) { return 256 }
+//        if( count >= 128 ) { return 128 }
+//        if( count >= 64 ) { return 64 }
         return count
     }
     

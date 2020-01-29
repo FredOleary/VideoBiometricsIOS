@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)processImage:(cv::Mat&)image;
 - (bool)faceDetect: (cv::Mat&) image;
 - (void)processImageRect :(cv::Mat&)image :(cv::Rect2d&) rect;
-- (void)resume;
+- (void)resume :(int)framesPerHeartRateReading;
 
 +(UIImage *)UIImageFromCVMat:(cv::Mat)cvMat;
 +(cv::Rect2d) clipRectToImage: (cv::Rect2d)clipRect :(cv::Mat&)image;

@@ -69,7 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void) startCamera :(int)frameRate;
 - (void) stopCamera;
-- (void) resumeCamera;
+- (void) resumeCamera :(int)framesPerHeartRateSample;
 
 - (NSMutableArray*)getRedPixels;
 - (NSMutableArray*)getGreenPixels;

@@ -76,8 +76,6 @@
     framesPerHRSample = framesPerHeartRateSample;
     cameraFrameRate = frameRate;
     imageProcessor = [[OpenCVImageProcessor alloc] initWithOpenCVView
-//                      :imageOpenCV:heartRateLabel
-//                      :heartRateProgress
                       :framesPerHRSample
                       :self];
     videoCamera = [[CvVideoCamera alloc] initWithParentView:dummyImageView];
@@ -91,6 +89,7 @@
 
 - (void) startCamera :(int)frameRate{
     NSLog(@"Video Started---");
+    [imageProcessor resume :framesPerHRSample];
     cameraFrameRate = frameRate;
     videoCamera.defaultFPS = cameraFrameRate;
     [videoCamera start];
@@ -99,9 +98,10 @@
     NSLog(@"Video Stopped---");
     [videoCamera stop];
 }
-- (void) resumeCamera{
+- (void) resumeCamera :(int)framesPerHeartRateSample{
+    framesPerHRSample = framesPerHeartRateSample;
     NSLog(@"Video Resumed---");
-    [imageProcessor resume];
+    [imageProcessor resume :framesPerHRSample];
 }
 
 

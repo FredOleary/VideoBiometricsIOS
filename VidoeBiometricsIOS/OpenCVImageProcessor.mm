@@ -114,7 +114,8 @@
     return self;
 }
 
-- (void)resume{
+- (void)resume :(int)framesPerHeartRateReading{
+    framesPerHrReading = framesPerHeartRateReading;
     faceDetected = false;
     frameCount = 0;
     self.videoProcessingPaused = false;

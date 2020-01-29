@@ -46,7 +46,7 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
                 cameraRunning = CameraState.paused
                 parent!.startStopVideoButton = "Resume"
             }else{
-                openCVWrapper.resumeCamera();
+                openCVWrapper.resumeCamera(Int32(Settings.getFramesPerHeartRateSample()));
             }
             heartRateCalculation!.calculateHeartRate( actualFPS )
             var heartRateStr:String = "Heart Rate: N/A"
@@ -91,7 +91,7 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
             parent!.startStopVideoButton = "Start"
         }else if( cameraRunning == CameraState.paused ){
             cameraRunning = CameraState.running;
-            openCVWrapper.resumeCamera();
+            openCVWrapper.resumeCamera( Int32(Settings.getFramesPerHeartRateSample()));
             parent!.startStopVideoButton = "Stop"
         }
 
@@ -113,19 +113,30 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
     private func updateWaveform( lineChartView:LineCharts?, dataSeries:HeartRateSeries, _ description:String){
         if let lineChart = lineChartView?.lineChart {
             let (red, green, blue) = getRDBdata(dataSeries )
+            let (redPeak, greenPeak, bluePeak) = getRDBPeakHeartRate(dataSeries)
             
             if let timeSeries = heartRateCalculation!.timeSeries {
                 let data = LineChartData()
                 if let redData = red  {
-                    addLine(data, redData, timeSeries, color:[NSUIColor.red], "Red")
+                    addLine(data, redData, timeSeries, color:[NSUIColor.red], formatPeakData( redPeak))
                 }
                 if let greenData = green {
-                    addLine(data, greenData, timeSeries, color:[NSUIColor.green], "Green")
+                    addLine(data, greenData, timeSeries, color:[NSUIColor.green], formatPeakData( greenPeak))
 
                 }
                 if let blueData = blue {
-                    addLine(data, blueData, timeSeries, color:[NSUIColor.blue], "Blue")
+                    addLine(data, blueData, timeSeries, color:[NSUIColor.blue], formatPeakData( bluePeak))
                 }
+                if dataSeries == HeartRateSeries.filteredData {
+                    if let greenMax = heartRateCalculation?.maxGreenPeaks {
+                        addMaxLine( data, greenMax, color:[NSUIColor.darkGray], "Green Max")
+                    }
+                }else if dataSeries == HeartRateSeries.filteredICAData {
+                    if let greenMax = heartRateCalculation?.ICAmaxGreenPeaks {
+                        addMaxLine( data, greenMax, color:[NSUIColor.darkGray], "Green Max")
+                    }
+                }
+
                 lineChart.data = data
                 lineChart.chartDescription!.text = description
                 lineChart.chartDescription!.font = .systemFont(ofSize: 16, weight: .light)
@@ -133,6 +144,20 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
         }
     }
 
+    private func addMaxLine( _ lineChartData:LineChartData, _ maxSeries:[(Double, Double)], color:[NSUIColor], _ name:String ){
+        var lineChartEntry  = [ChartDataEntry]()
+        for i in 0..<maxSeries.count {
+            let (yVal,xVal) = maxSeries[i]
+            let value = ChartDataEntry(x: xVal, y: yVal)
+            lineChartEntry.append(value)
+        }
+
+        let line = LineChartDataSet(entries: lineChartEntry, label: name)
+        line.drawCirclesEnabled = true
+        line.colors = color
+        lineChartData.addDataSet(line) 
+
+    }
     
     private func addLine( _ lineChartData:LineChartData, _ yData:[Double], _ xData:[Double], color:[NSUIColor], _ name:String) {
         var lineChartEntry  = [ChartDataEntry]() //this is the Array that will eventually be displayed on the graph.
@@ -215,10 +240,7 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
     }
 
     private func getRDBdata( _ dataSeries:HeartRateSeries ) -> ([Double]?, [Double]?, [Double]?){
-//        let red:[Double]?
-//        let green:[Double]?
-//        let blue:[Double]?
-
+        
         switch dataSeries {
         case .rawData:
 //            return (heartRateCalculation!.deltaRawRed, heartRateCalculation!.deltaRawGreen, heartRateCalculation!.deltaRawBlue)
@@ -241,5 +263,24 @@ class VideoProcessor: NSObject, OpenCVWrapperDelegate{
         default:
             return ([Double](), [Double](), [Double]())
         }
+    }
+    private func getRDBPeakHeartRate( _ dataSeries:HeartRateSeries ) -> ((Double, Double)?, (Double, Double)?, (Double, Double)?){
+        let peakHeartRatedata = ((0.0, 0.0), (0.0, 0.0), (0.0, 0.0))
+        switch dataSeries {
+            case .filteredData:
+                return (heartRateCalculation!.heartRatePeakRed, heartRateCalculation!.heartRatePeakGreen, heartRateCalculation!.heartRatePeakBlue)
+            case .filteredICAData:
+                return (heartRateCalculation!.ICAheartRatePeakRed, heartRateCalculation!.ICAheartRatePeakGreen, heartRateCalculation!.ICAheartRatePeakBlue)
+            default:
+                return peakHeartRatedata
+        }
+    }
+    private func formatPeakData( _ peakData:(Double, Double)? ) ->String {
+        if let (heartRateHz, stdDeviationHz) = peakData {
+            if( heartRateHz > 0.0){
+                return NSString(format: "%.1f +/- %.1f", heartRateHz * 60, stdDeviationHz * 60) as String
+            }
+        }
+        return "N/A"
     }
 }

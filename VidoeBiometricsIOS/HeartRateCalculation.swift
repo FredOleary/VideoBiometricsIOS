@@ -163,16 +163,16 @@ class HeartRateCalculation{
         assert(filteredGreenAmplitude!.count == timeSeries!.count)
         assert(filteredBlueAmplitude!.count == timeSeries!.count)
         
-        // TODO Make lookahead/delta be dynamic...
-        let delta = 0.1
-        (maxRedPeaks, _) = PeakDetect.peakDetect(yAxis: filteredRedAmplitude!, xAxis: timeSeries!, lookAhead: 10, delta: delta)
-        (maxGreenPeaks, _) = PeakDetect.peakDetect(yAxis: filteredGreenAmplitude!, xAxis: timeSeries!, lookAhead: 10, delta: delta)
-        (maxBluePeaks, _) = PeakDetect.peakDetect(yAxis: filteredBlueAmplitude!, xAxis: timeSeries!, lookAhead: 10, delta: delta)
-        
-        heartRatePeakRed = calculateHeartRateFromPeaks(maxRedPeaks!, filterStart, filterEnd )
-        heartRatePeakGreen = calculateHeartRateFromPeaks(maxGreenPeaks!, filterStart, filterEnd )
-        heartRatePeakBlue = calculateHeartRateFromPeaks(maxBluePeaks!, filterStart, filterEnd )
-//        heartRateFrequency = hrGreen
+//        // TODO Make lookahead/delta be dynamic...
+//        let delta = 0.1
+//        (maxRedPeaks, _) = PeakDetect.peakDetect(yAxis: filteredRedAmplitude!, xAxis: timeSeries!, lookAhead: 10, delta: delta)
+//        (maxGreenPeaks, _) = PeakDetect.peakDetect(yAxis: filteredGreenAmplitude!, xAxis: timeSeries!, lookAhead: 10, delta: delta)
+//        (maxBluePeaks, _) = PeakDetect.peakDetect(yAxis: filteredBlueAmplitude!, xAxis: timeSeries!, lookAhead: 10, delta: delta)
+//
+//        heartRatePeakRed = calculateHeartRateFromPeaks(maxRedPeaks!, filterStart, filterEnd )
+//        heartRatePeakGreen = calculateHeartRateFromPeaks(maxGreenPeaks!, filterStart, filterEnd )
+//        heartRatePeakBlue = calculateHeartRateFromPeaks(maxBluePeaks!, filterStart, filterEnd )
+////        heartRateFrequency = hrGreen
 
         (FFTRedAmplitude, FFTRedFrequency, heartRateRedFrequency, _) = fft.calculate( filteredRedAmplitude!, fps: frameRate)
         (FFTGreenAmplitude, FFTGreenFrequency, heartRateGreenFrequency, _) = fft.calculate( filteredGreenAmplitude!, fps: frameRate)
@@ -200,17 +200,32 @@ class HeartRateCalculation{
             }else if( ICABlueMax > ICARedMax){
                 heartRateFrequencyICA = ICAheartRateBlueFrequency
             }
-            let ICADelta = 0.1
-            (ICAmaxRedPeaks, _) = PeakDetect.peakDetect(yAxis: ICARedAmplitude!, xAxis: timeSeries!, lookAhead: 10, delta: ICADelta)
-            (ICAmaxGreenPeaks, _) = PeakDetect.peakDetect(yAxis: ICAGreenAmplitude!, xAxis: timeSeries!, lookAhead: 10, delta: ICADelta)
-            (ICAmaxBluePeaks, _) = PeakDetect.peakDetect(yAxis: ICABlueAmplitude!, xAxis: timeSeries!, lookAhead: 10, delta: ICADelta)
-            
-            ICAheartRatePeakRed = calculateHeartRateFromPeaks(ICAmaxRedPeaks!, filterStart, filterEnd )
-            ICAheartRatePeakGreen = calculateHeartRateFromPeaks(ICAmaxGreenPeaks!, filterStart, filterEnd )
-            ICAheartRatePeakBlue = calculateHeartRateFromPeaks(ICAmaxBluePeaks!, filterStart, filterEnd )
+//            let ICADelta = 0.1
+//            (ICAmaxRedPeaks, _) = PeakDetect.peakDetect(yAxis: ICARedAmplitude!, xAxis: timeSeries!, lookAhead: 10, delta: ICADelta)
+//            (ICAmaxGreenPeaks, _) = PeakDetect.peakDetect(yAxis: ICAGreenAmplitude!, xAxis: timeSeries!, lookAhead: 10, delta: ICADelta)
+//            (ICAmaxBluePeaks, _) = PeakDetect.peakDetect(yAxis: ICABlueAmplitude!, xAxis: timeSeries!, lookAhead: 10, delta: ICADelta)
+//
+//            ICAheartRatePeakRed = calculateHeartRateFromPeaks(ICAmaxRedPeaks!, filterStart, filterEnd )
+//            ICAheartRatePeakGreen = calculateHeartRateFromPeaks(ICAmaxGreenPeaks!, filterStart, filterEnd )
+//            ICAheartRatePeakBlue = calculateHeartRateFromPeaks(ICAmaxBluePeaks!, filterStart, filterEnd )
 
 
         }
+        // Calculate heart rates from peak data
+        var peakCalculation = PeakCalculation( waveForm:filteredRedAmplitude, timeSeries:timeSeries, filterStart:filterStart, filterEnd:filterEnd)
+        heartRatePeakRed = peakCalculation.calculateHRFromPeaks()
+        peakCalculation = PeakCalculation( waveForm:filteredGreenAmplitude, timeSeries:timeSeries, filterStart:filterStart, filterEnd:filterEnd)
+        heartRatePeakGreen = peakCalculation.calculateHRFromPeaks()
+        peakCalculation = PeakCalculation( waveForm:filteredBlueAmplitude, timeSeries:timeSeries, filterStart:filterStart, filterEnd:filterEnd)
+        heartRatePeakBlue = peakCalculation.calculateHRFromPeaks()
+
+        peakCalculation = PeakCalculation( waveForm:ICARedAmplitude, timeSeries:timeSeries, filterStart:filterStart, filterEnd:filterEnd)
+        ICAheartRatePeakRed = peakCalculation.calculateHRFromPeaks()
+        peakCalculation = PeakCalculation( waveForm:ICAGreenAmplitude, timeSeries:timeSeries, filterStart:filterStart, filterEnd:filterEnd)
+        ICAheartRatePeakGreen = peakCalculation.calculateHRFromPeaks()
+        peakCalculation = PeakCalculation( waveForm:ICABlueAmplitude, timeSeries:timeSeries, filterStart:filterStart, filterEnd:filterEnd)
+        ICAheartRatePeakBlue = peakCalculation.calculateHRFromPeaks()
+
     }
     func calculateICA() -> Bool {
         if( normalizedRedAmplitude != nil ){

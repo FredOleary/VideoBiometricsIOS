@@ -11,6 +11,7 @@
 		5310348223D0FB7E007FAE9B /* FilteredICADataChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5310348123D0FB7E007FAE9B /* FilteredICADataChartView.swift */; };
 		5310348423D13876007FAE9B /* FftICADataChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5310348323D13876007FAE9B /* FftICADataChartView.swift */; };
 		5310348623DF7D25007FAE9B /* PeakDetect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5310348523DF7D25007FAE9B /* PeakDetect.swift */; };
+		5327957923E8ACFF000D5741 /* PeakCalculations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5327957823E8ACFF000D5741 /* PeakCalculations.swift */; };
 		53691D3523C5431F0015B86C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53691D3423C5431F0015B86C /* AppDelegate.swift */; };
 		53691D3723C5431F0015B86C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53691D3623C5431F0015B86C /* SceneDelegate.swift */; };
 		53691D3923C5431F0015B86C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53691D3823C5431F0015B86C /* ContentView.swift */; };
@@ -48,6 +49,7 @@
 		5310348123D0FB7E007FAE9B /* FilteredICADataChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilteredICADataChartView.swift; sourceTree = "<group>"; };
 		5310348323D13876007FAE9B /* FftICADataChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FftICADataChartView.swift; sourceTree = "<group>"; };
 		5310348523DF7D25007FAE9B /* PeakDetect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeakDetect.swift; sourceTree = "<group>"; };
+		5327957823E8ACFF000D5741 /* PeakCalculations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeakCalculations.swift; sourceTree = "<group>"; };
 		53691D3123C5431F0015B86C /* VidoeBiometricsIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VidoeBiometricsIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53691D3423C5431F0015B86C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		53691D3623C5431F0015B86C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -192,6 +194,7 @@
 			children = (
 				53D6EB4B23CD439F00679BCC /* VideoProcessor.swift */,
 				53D6EB1923C9600700679BCC /* HeartRateCalculation.swift */,
+				5327957823E8ACFF000D5741 /* PeakCalculations.swift */,
 				5310348523DF7D25007FAE9B /* PeakDetect.swift */,
 				53D6EB2723C962DF00679BCC /* RGBSampleData.swift */,
 				53D6EB2523C9623900679BCC /* TestAccelerate.swift */,
@@ -343,6 +346,7 @@
 				53D6EB4C23CD439F00679BCC /* VideoProcessor.swift in Sources */,
 				53D6EB2823C962DF00679BCC /* RGBSampleData.swift in Sources */,
 				53D6EB2323C9600700679BCC /* ICA.swift in Sources */,
+				5327957923E8ACFF000D5741 /* PeakCalculations.swift in Sources */,
 				53691D3523C5431F0015B86C /* AppDelegate.swift in Sources */,
 				53D6EB1F23C9600700679BCC /* HeartRateCalculation.swift in Sources */,
 				53D6EB1523C8E0C800679BCC /* VideoView.swift in Sources */,

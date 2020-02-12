@@ -18,14 +18,15 @@
 		53691D3B23C543260015B86C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53691D3A23C543260015B86C /* Assets.xcassets */; };
 		53691D3E23C543260015B86C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53691D3D23C543260015B86C /* Preview Assets.xcassets */; };
 		53691D4123C543260015B86C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 53691D3F23C543260015B86C /* LaunchScreen.storyboard */; };
-		53691D4923C56FD50015B86C /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53691D4823C56FD50015B86C /* opencv2.framework */; };
 		53691D4D23C570630015B86C /* OpenCVWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 53691D4B23C570620015B86C /* OpenCVWrapper.mm */; };
 		53691D5123C570760015B86C /* haarcascade_frontalface_default.xml in Resources */ = {isa = PBXBuildFile; fileRef = 53691D4E23C570760015B86C /* haarcascade_frontalface_default.xml */; };
 		53691D5223C570760015B86C /* OpenCVImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 53691D5023C570760015B86C /* OpenCVImageProcessor.mm */; };
-		53691D5623C5710C0015B86C /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53691D5423C5710C0015B86C /* CoreMedia.framework */; };
-		53691D5723C5710C0015B86C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53691D5523C5710C0015B86C /* AVFoundation.framework */; };
-		537772BF23F47F0500CEE4D5 /* libDSPFiltersiOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 537772BE23F3981200CEE4D5 /* libDSPFiltersiOS.a */; };
+		537772BF23F47F0500CEE4D5 /* libDSPFiltersiOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 537772BE23F3981200CEE4D5 /* libDSPFiltersiOS.a */; settings = {ATTRIBUTES = (Required, ); }; };
 		537772C223F4803C00CEE4D5 /* DSPFilter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 537772C123F4803C00CEE4D5 /* DSPFilter.mm */; };
+		537772C423F4930900CEE4D5 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53691D5523C5710C0015B86C /* AVFoundation.framework */; };
+		537772C723F4930C00CEE4D5 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53691D5423C5710C0015B86C /* CoreMedia.framework */; };
+		537772C923F4930E00CEE4D5 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53691D4823C56FD50015B86C /* opencv2.framework */; };
+		537772CB23F4930F00CEE4D5 /* Pods_VidoeBiometricsIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9B31DEEC719EEC0E91B0908 /* Pods_VidoeBiometricsIOS.framework */; };
 		53C393D123CF9A3400DE4622 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C393D023CF9A3400DE4622 /* SettingsView.swift */; };
 		53D6EB1023C8DC1D00679BCC /* LineCharts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6EB0F23C8DC1D00679BCC /* LineCharts.swift */; };
 		53D6EB1223C8DD1B00679BCC /* RawDataChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6EB1123C8DD1B00679BCC /* RawDataChartView.swift */; };
@@ -43,7 +44,6 @@
 		53D6EB4E23CD447C00679BCC /* FilteredDataChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6EB4D23CD447C00679BCC /* FilteredDataChartView.swift */; };
 		53D6EB5023CE7E4000679BCC /* FftDataChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6EB4F23CE7E4000679BCC /* FftDataChartView.swift */; };
 		53D6EB5223CE7FD000679BCC /* BarCharts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6EB5123CE7FD000679BCC /* BarCharts.swift */; };
-		59BB64B943AC29BF24B34114 /* Pods_VidoeBiometricsIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9B31DEEC719EEC0E91B0908 /* Pods_VidoeBiometricsIOS.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +59,13 @@
 			containerPortal = 537772B623F3981200CEE4D5 /* DSPFilters.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 2E7DB526140DFC22009FE107;
+			remoteInfo = DSPFiltersiOS;
+		};
+		537772CD23F4957700CEE4D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 537772B623F3981200CEE4D5 /* DSPFilters.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2E7DB525140DFC22009FE107;
 			remoteInfo = DSPFiltersiOS;
 		};
 /* End PBXContainerItemProxy section */
@@ -117,10 +124,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				537772BF23F47F0500CEE4D5 /* libDSPFiltersiOS.a in Frameworks */,
-				53691D5623C5710C0015B86C /* CoreMedia.framework in Frameworks */,
-				53691D4923C56FD50015B86C /* opencv2.framework in Frameworks */,
-				53691D5723C5710C0015B86C /* AVFoundation.framework in Frameworks */,
-				59BB64B943AC29BF24B34114 /* Pods_VidoeBiometricsIOS.framework in Frameworks */,
+				537772CB23F4930F00CEE4D5 /* Pods_VidoeBiometricsIOS.framework in Frameworks */,
+				537772C423F4930900CEE4D5 /* AVFoundation.framework in Frameworks */,
+				537772C923F4930E00CEE4D5 /* opencv2.framework in Frameworks */,
+				537772C723F4930C00CEE4D5 /* CoreMedia.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,6 +274,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				537772CE23F4957700CEE4D5 /* PBXTargetDependency */,
 			);
 			name = VidoeBiometricsIOS;
 			productName = VidoeBiometricsIOS;
@@ -423,6 +431,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		537772CE23F4957700CEE4D5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = DSPFiltersiOS;
+			targetProxy = 537772CD23F4957700CEE4D5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		53691D3F23C543260015B86C /* LaunchScreen.storyboard */ = {

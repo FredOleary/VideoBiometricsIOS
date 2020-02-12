@@ -89,17 +89,24 @@ class TemporalFilter {
     }
     func getFilterResponse( fps:Double, filterStart:Double, filterEnd:Double,  startFrequency:Double, endFrequency:Double ) ->([Double], [Double]){
         func getFilterResponseFreq( _ fps:Double, _ filterStart:Double, _ filterEnd:Double,  _ frequency:Double ) -> Double{
-        //        let testAccelerate = TestAccelerate()
-            let input = TestAccelerate.makeSineWave( frequency, fps:30, noOfSamples:300 )
-            let output = bandpassFilter(dataIn: input, sampleRate: fps, filterLoRate: filterStart, filterHiRate: filterEnd)
+//            let input = TestAccelerate.makeSineWave( frequency, fps:30, noOfSamples:300 )
+//            let output = bandpassFilter(dataIn: input, sampleRate: fps, filterLoRate: filterStart, filterHiRate: filterEnd)
+//
+//            let outputFloats:[Float] = (0..<output.count).map {
+//                return Float( output[$0])
+//            }
             
-            let outputFloats:[Float] = (0..<output.count).map {
-                return Float( output[$0])
+            let input = TestAccelerate.makeSineWave( frequency, fps:30, noOfSamples:300 )
+            var inputFloats:[Float] = (0..<input.count).map {
+                return Float( input[$0])
             }
+            let dspFilter = DSPFilter()
+            // testAPI.testIt(30, &data, 300, 0.74, 2.4)
+            dspFilter.butterworthFilter( Int32(fps), &inputFloats, 300, filterStart, filterEnd )
             let stride = vDSP_Stride(1)
-            let n = vDSP_Length(outputFloats.count)
+            let n = vDSP_Length(inputFloats.count)
             var rmsValue: Float = .nan
-            vDSP_rmsqv(outputFloats, stride, &rmsValue, n)
+            vDSP_rmsqv(inputFloats, stride, &rmsValue, n)
             return Double( rmsValue )
         }
 

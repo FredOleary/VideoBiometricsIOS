@@ -24,6 +24,8 @@
 		53691D5223C570760015B86C /* OpenCVImageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 53691D5023C570760015B86C /* OpenCVImageProcessor.mm */; };
 		53691D5623C5710C0015B86C /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53691D5423C5710C0015B86C /* CoreMedia.framework */; };
 		53691D5723C5710C0015B86C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53691D5523C5710C0015B86C /* AVFoundation.framework */; };
+		537772BF23F47F0500CEE4D5 /* libDSPFiltersiOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 537772BE23F3981200CEE4D5 /* libDSPFiltersiOS.a */; };
+		537772C223F4803C00CEE4D5 /* DSPFilter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 537772C123F4803C00CEE4D5 /* DSPFilter.mm */; };
 		53C393D123CF9A3400DE4622 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C393D023CF9A3400DE4622 /* SettingsView.swift */; };
 		53D6EB1023C8DC1D00679BCC /* LineCharts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6EB0F23C8DC1D00679BCC /* LineCharts.swift */; };
 		53D6EB1223C8DD1B00679BCC /* RawDataChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6EB1123C8DD1B00679BCC /* RawDataChartView.swift */; };
@@ -43,6 +45,23 @@
 		53D6EB5223CE7FD000679BCC /* BarCharts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6EB5123CE7FD000679BCC /* BarCharts.swift */; };
 		59BB64B943AC29BF24B34114 /* Pods_VidoeBiometricsIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9B31DEEC719EEC0E91B0908 /* Pods_VidoeBiometricsIOS.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		537772BB23F3981200CEE4D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 537772B623F3981200CEE4D5 /* DSPFilters.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2E7DB503140DFBDF009FE107;
+			remoteInfo = DSPFiltersMacOS;
+		};
+		537772BD23F3981200CEE4D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 537772B623F3981200CEE4D5 /* DSPFilters.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2E7DB526140DFC22009FE107;
+			remoteInfo = DSPFiltersiOS;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		5307D0B323D002300050354F /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
@@ -67,6 +86,9 @@
 		53691D5023C570760015B86C /* OpenCVImageProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenCVImageProcessor.mm; sourceTree = "<group>"; };
 		53691D5423C5710C0015B86C /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		53691D5523C5710C0015B86C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		537772B623F3981200CEE4D5 /* DSPFilters.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = DSPFilters.xcodeproj; path = DSPFilters/DSPFilters.xcodeproj; sourceTree = "<group>"; };
+		537772C023F47FBC00CEE4D5 /* DSPFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DSPFilter.h; sourceTree = "<group>"; };
+		537772C123F4803C00CEE4D5 /* DSPFilter.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DSPFilter.mm; sourceTree = "<group>"; };
 		53C393D023CF9A3400DE4622 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		53D6EB0F23C8DC1D00679BCC /* LineCharts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LineCharts.swift; path = /Users/fredoleary/xcodeprojects/VidoeBiometricsIOS/VidoeBiometricsIOS/LineCharts.swift; sourceTree = "<absolute>"; };
 		53D6EB1123C8DD1B00679BCC /* RawDataChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawDataChartView.swift; sourceTree = "<group>"; };
@@ -94,6 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				537772BF23F47F0500CEE4D5 /* libDSPFiltersiOS.a in Frameworks */,
 				53691D5623C5710C0015B86C /* CoreMedia.framework in Frameworks */,
 				53691D4923C56FD50015B86C /* opencv2.framework in Frameworks */,
 				53691D5723C5710C0015B86C /* AVFoundation.framework in Frameworks */,
@@ -107,6 +130,7 @@
 		53691D2823C5431F0015B86C = {
 			isa = PBXGroup;
 			children = (
+				537772B623F3981200CEE4D5 /* DSPFilters.xcodeproj */,
 				53691D4823C56FD50015B86C /* opencv2.framework */,
 				53691D3323C5431F0015B86C /* VidoeBiometricsIOS */,
 				53691D3223C5431F0015B86C /* Products */,
@@ -163,6 +187,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		537772B723F3981200CEE4D5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				537772BC23F3981200CEE4D5 /* libDSPFiltersMacOS.a */,
+				537772BE23F3981200CEE4D5 /* libDSPFiltersiOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		53D6EB1323C8E07E00679BCC /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -203,6 +236,8 @@
 				53D6EB1E23C9600700679BCC /* Matrix.swift */,
 				53D6EB1B23C9600700679BCC /* SVD.swift */,
 				53D6EB1C23C9600700679BCC /* TemporalFilter.swift */,
+				537772C023F47FBC00CEE4D5 /* DSPFilter.h */,
+				537772C123F4803C00CEE4D5 /* DSPFilter.mm */,
 			);
 			name = VideoAnalysis;
 			sourceTree = "<group>";
@@ -265,12 +300,35 @@
 			mainGroup = 53691D2823C5431F0015B86C;
 			productRefGroup = 53691D3223C5431F0015B86C /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 537772B723F3981200CEE4D5 /* Products */;
+					ProjectRef = 537772B623F3981200CEE4D5 /* DSPFilters.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				53691D3023C5431F0015B86C /* VidoeBiometricsIOS */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		537772BC23F3981200CEE4D5 /* libDSPFiltersMacOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libDSPFiltersMacOS.a;
+			remoteRef = 537772BB23F3981200CEE4D5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		537772BE23F3981200CEE4D5 /* libDSPFiltersiOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libDSPFiltersiOS.a;
+			remoteRef = 537772BD23F3981200CEE4D5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		53691D2F23C5431F0015B86C /* Resources */ = {
@@ -356,6 +414,7 @@
 				53D6EB2223C9600700679BCC /* TemporalFilter.swift in Sources */,
 				53D6EB5023CE7E4000679BCC /* FftDataChartView.swift in Sources */,
 				53D6EB4E23CD447C00679BCC /* FilteredDataChartView.swift in Sources */,
+				537772C223F4803C00CEE4D5 /* DSPFilter.mm in Sources */,
 				53691D3923C5431F0015B86C /* ContentView.swift in Sources */,
 				53D6EB5223CE7FD000679BCC /* BarCharts.swift in Sources */,
 				53D6EB2123C9600700679BCC /* SVD.swift in Sources */,
@@ -505,6 +564,11 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Charts/Charts.framework/Headers\"",
+					DSPFilters/include,
+				);
 				INFOPLIST_FILE = VidoeBiometricsIOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -532,6 +596,11 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Charts/Charts.framework/Headers\"",
+					DSPFilters/include,
 				);
 				INFOPLIST_FILE = VidoeBiometricsIOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

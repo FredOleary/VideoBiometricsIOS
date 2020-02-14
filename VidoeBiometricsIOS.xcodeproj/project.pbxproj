@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D2BC536168E058801B5D7DF /* libPods-VidoeBiometricsIOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1032234F604CDAB71723D189 /* libPods-VidoeBiometricsIOS.a */; };
 		5307D0B423D002300050354F /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5307D0B323D002300050354F /* ViewModel.swift */; };
 		5310348223D0FB7E007FAE9B /* FilteredICADataChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5310348123D0FB7E007FAE9B /* FilteredICADataChartView.swift */; };
 		5310348423D13876007FAE9B /* FftICADataChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5310348323D13876007FAE9B /* FftICADataChartView.swift */; };
@@ -26,7 +27,6 @@
 		537772C423F4930900CEE4D5 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53691D5523C5710C0015B86C /* AVFoundation.framework */; };
 		537772C723F4930C00CEE4D5 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53691D5423C5710C0015B86C /* CoreMedia.framework */; };
 		537772C923F4930E00CEE4D5 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53691D4823C56FD50015B86C /* opencv2.framework */; };
-		537772CB23F4930F00CEE4D5 /* Pods_VidoeBiometricsIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9B31DEEC719EEC0E91B0908 /* Pods_VidoeBiometricsIOS.framework */; };
 		53C393D123CF9A3400DE4622 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C393D023CF9A3400DE4622 /* SettingsView.swift */; };
 		53D6EB1023C8DC1D00679BCC /* LineCharts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6EB0F23C8DC1D00679BCC /* LineCharts.swift */; };
 		53D6EB1223C8DD1B00679BCC /* RawDataChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6EB1123C8DD1B00679BCC /* RawDataChartView.swift */; };
@@ -71,6 +71,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1032234F604CDAB71723D189 /* libPods-VidoeBiometricsIOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VidoeBiometricsIOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5307D0B323D002300050354F /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		5310348123D0FB7E007FAE9B /* FilteredICADataChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilteredICADataChartView.swift; sourceTree = "<group>"; };
 		5310348323D13876007FAE9B /* FftICADataChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FftICADataChartView.swift; sourceTree = "<group>"; };
@@ -113,7 +114,6 @@
 		53D6EB4D23CD447C00679BCC /* FilteredDataChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilteredDataChartView.swift; sourceTree = "<group>"; };
 		53D6EB4F23CE7E4000679BCC /* FftDataChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FftDataChartView.swift; sourceTree = "<group>"; };
 		53D6EB5123CE7FD000679BCC /* BarCharts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarCharts.swift; sourceTree = "<group>"; };
-		D9B31DEEC719EEC0E91B0908 /* Pods_VidoeBiometricsIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VidoeBiometricsIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA83E61BA0C74F54FDB92174 /* Pods-VidoeBiometricsIOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VidoeBiometricsIOS.release.xcconfig"; path = "Target Support Files/Pods-VidoeBiometricsIOS/Pods-VidoeBiometricsIOS.release.xcconfig"; sourceTree = "<group>"; };
 		F0A6F3916DC8557C9702DB0B /* Pods-VidoeBiometricsIOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VidoeBiometricsIOS.debug.xcconfig"; path = "Target Support Files/Pods-VidoeBiometricsIOS/Pods-VidoeBiometricsIOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -124,10 +124,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				537772BF23F47F0500CEE4D5 /* libDSPFiltersiOS.a in Frameworks */,
-				537772CB23F4930F00CEE4D5 /* Pods_VidoeBiometricsIOS.framework in Frameworks */,
 				537772C423F4930900CEE4D5 /* AVFoundation.framework in Frameworks */,
 				537772C923F4930E00CEE4D5 /* opencv2.framework in Frameworks */,
 				537772C723F4930C00CEE4D5 /* CoreMedia.framework in Frameworks */,
+				4D2BC536168E058801B5D7DF /* libPods-VidoeBiometricsIOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,7 +189,7 @@
 			children = (
 				53691D5523C5710C0015B86C /* AVFoundation.framework */,
 				53691D5423C5710C0015B86C /* CoreMedia.framework */,
-				D9B31DEEC719EEC0E91B0908 /* Pods_VidoeBiometricsIOS.framework */,
+				1032234F604CDAB71723D189 /* libPods-VidoeBiometricsIOS.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -269,7 +269,6 @@
 				53691D2D23C5431F0015B86C /* Sources */,
 				53691D2E23C5431F0015B86C /* Frameworks */,
 				53691D2F23C5431F0015B86C /* Resources */,
-				DA76AB20C329623059E43811 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -353,23 +352,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		DA76AB20C329623059E43811 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-VidoeBiometricsIOS/Pods-VidoeBiometricsIOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-VidoeBiometricsIOS/Pods-VidoeBiometricsIOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VidoeBiometricsIOS/Pods-VidoeBiometricsIOS-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		F645F66B1C517B813BF88EEC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

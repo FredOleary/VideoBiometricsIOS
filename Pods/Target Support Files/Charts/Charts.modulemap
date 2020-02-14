@@ -1,4 +1,4 @@
-framework module Charts {
+module Charts {
   umbrella header "Charts-umbrella.h"
 
   export *

@@ -1,4 +1,4 @@
-framework module Pods_VidoeBiometricsIOS {
+module Pods_VidoeBiometricsIOS {
   umbrella header "Pods-VidoeBiometricsIOS-umbrella.h"
 
   export *

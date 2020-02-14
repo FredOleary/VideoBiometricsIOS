@@ -218,6 +218,7 @@ class HeartRateCalculation{
         heartRatePeakGreen = peakCalculation.calculateHRFromPeaks()
         peakCalculation = PeakCalculation( waveForm:filteredBlueAmplitude, timeSeries:timeSeries, filterStart:filterStart, filterEnd:filterEnd)
         heartRatePeakBlue = peakCalculation.calculateHRFromPeaks()
+        heartRateFrequency = getAverageHR( red:heartRatePeakRed, green:heartRatePeakGreen, blue:heartRatePeakBlue)
 
         peakCalculation = PeakCalculation( waveForm:ICARedAmplitude, timeSeries:timeSeries, filterStart:filterStart, filterEnd:filterEnd)
         ICAheartRatePeakRed = peakCalculation.calculateHRFromPeaks()
@@ -225,8 +226,30 @@ class HeartRateCalculation{
         ICAheartRatePeakGreen = peakCalculation.calculateHRFromPeaks()
         peakCalculation = PeakCalculation( waveForm:ICABlueAmplitude, timeSeries:timeSeries, filterStart:filterStart, filterEnd:filterEnd)
         ICAheartRatePeakBlue = peakCalculation.calculateHRFromPeaks()
+        heartRateFrequencyICA = getAverageHR( red:ICAheartRatePeakRed, green:ICAheartRatePeakGreen, blue:ICAheartRatePeakBlue)
 
     }
+    func getAverageHR( red:(Double,Double)?, green:(Double,Double)?, blue:(Double,Double)? ) -> Double {
+        var heartRate = 0.0
+        var count = 0
+        if let (average, _) = red {
+            heartRate += average
+            count += 1
+        }
+        if let (average, _) = green {
+            heartRate += average
+            count += 1
+        }
+        if let (average, _) = blue {
+            heartRate += average
+            count += 1
+        }
+        if count > 0 {
+            heartRate /= Double(count)
+        }
+        return heartRate
+    }
+    
     func calculateICA() -> Bool {
         if( normalizedRedAmplitude != nil ){
             
@@ -259,34 +282,34 @@ class HeartRateCalculation{
         }
         return false
     }
-    func calculateHeartRateFromPeaks( _ peaks:[(Double, Double)], _ filterLow:Double, _ filterHigh:Double ) -> (Double, Double){
-        var heartRateData = (0.0,0.0)
-        var count = 0
-        var heartRate = 0.0
-        var peakList = [Double]()
-        if( peaks.count > 1 ){
-            for n in 1...peaks.count-1 {
-                let ( _ , freq1 ) = peaks[n-1]
-                let ( _ , freq2 ) = peaks[n]
-                let freq = 1/(freq2 - freq1)
-                if( freq >= filterLow && freq <= filterHigh){
-                    peakList.append(freq)
-                    heartRate += freq
-                    count += 1
-                }
-            }
-            if count > minNoOfPeaks {
-                heartRate /= Double(count) // Average heart rate
-                var variance = 0.0
-                for n in 0...peakList.count-1{
-                    variance += pow((heartRate - peakList[n]), 2)
-                }
-                let stdDeviation = sqrt(variance/Double((count-1)))
-                heartRateData = (heartRate, stdDeviation)
-            }
-        }
-        return heartRateData
-    }
+//    func calculateHeartRateFromPeaks( _ peaks:[(Double, Double)], _ filterLow:Double, _ filterHigh:Double ) -> (Double, Double){
+//        var heartRateData = (0.0,0.0)
+//        var count = 0
+//        var heartRate = 0.0
+//        var peakList = [Double]()
+//        if( peaks.count > 1 ){
+//            for n in 1...peaks.count-1 {
+//                let ( _ , freq1 ) = peaks[n-1]
+//                let ( _ , freq2 ) = peaks[n]
+//                let freq = 1/(freq2 - freq1)
+//                if( freq >= filterLow && freq <= filterHigh){
+//                    peakList.append(freq)
+//                    heartRate += freq
+//                    count += 1
+//                }
+//            }
+//            if count > minNoOfPeaks {
+//                heartRate /= Double(count) // Average heart rate
+//                var variance = 0.0
+//                for n in 0...peakList.count-1{
+//                    variance += pow((heartRate - peakList[n]), 2)
+//                }
+//                let stdDeviation = sqrt(variance/Double((count-1)))
+//                heartRateData = (heartRate, stdDeviation)
+//            }
+//        }
+//        return heartRateData
+//    }
     func deltaRawPixels( _ pixels:[Double]) ->[Double] {
         if(pixels.count > 0){
             var delta:[Double] = [Double](repeating: 0.0, count: pixels.count)

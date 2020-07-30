@@ -14,5 +14,5 @@ This project is a proof of concept IOS application demonstrating how a persons h
 
 This application uses openCV to detect the users face, then a rectangular area of the forehead is tracked for 5-10 seconds. At the end of this period the RGB components are filtered. Independent Component Analysis, (ICA), is applied to the filtered data. The ICA components are then processed both by peak detection and FFT to determine if a heart rate can be detected. The diagram below illustrates the sequence.
 
-![flow_diagram] (./processing_diagram.png)
+![flow_diagram](./processing_diagram.png)
 

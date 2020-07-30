@@ -21,3 +21,9 @@ This application uses openCV to detect the users face, then a rectangular area o
 * Frame Rate (Toggle) 30 FPS or 60 FPS
 * Frames per Heart Rate same (Numeric) Number of frames analysis sample
 * Band Pass filter. (Floating point) Low/High cutoff frequencies in Hz
+
+## Build notes
+After cloning this repositary, do the following
+* Download and build the opencv framework for IOS
+* Open the VideoBiometrics solution with XCode
+* Drag opencv2.framework from the IOS build location to top level in XCode project navigator. (That is, opencv2.framework should be at the same level "Products" and "Frameworks" in the XCode navigator window)

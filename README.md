@@ -16,3 +16,8 @@ This application uses openCV to detect the users face, then a rectangular area o
 
 ![flow_diagram](./processing_diagram.png)
 
+## Tuning Parameters
+* Pause between Samples. (Boolean)  Useful for pausing the video if FFT/Peak detection data is to be examined
+* Frame Rate (Toggle) 30 FPS or 60 FPS
+* Frames per Heart Rate same (Numeric) Number of frames analysis sample
+* Band Pass filter. (Floating point) Low/High cutoff frequencies in Hz
